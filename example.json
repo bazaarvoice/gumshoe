@@ -1,0 +1,12 @@
+{"stream_id": "123e4567-e89b-12d3-a456-426655440000", "context": ["customer_processing"], "type": "started", "timestamp": "2011-12-03T10:15:30Z", "customer": 1}
+{"stream_id": "123e4567-e89b-12d3-a456-426655440000", "context": ["customer_processing", "item_processing"], "type": "started", "timestamp": "2011-12-03T10:15:30Z", "customer": 1, "item": 1}
+{"stream_id": "123e4567-e89b-12d3-a456-426655440000", "context": ["customer_processing", "item_processing"], "type": "did something", "timestamp": "2011-12-03T10:15:30Z", "customer": 1, "item": 1}
+{"stream_id": "123e4567-e89b-12d3-a456-426655440000", "context": ["customer_processing", "item_processing"], "type": "did something else", "timestamp": "2011-12-03T10:15:30Z", "customer": 1, "item": 1}
+{"stream_id": "123e4567-e89b-12d3-a456-426655440000", "context": ["customer_processing", "item_processing"], "type": "finished", "timestamp": "2011-12-03T10:15:30Z", "execution_time": 100, "customer": 1, "item": 1}
+{"stream_id": "123e4567-e89b-12d3-a456-426655440000", "context": ["customer_processing", "item_processing"], "type": "started", "timestamp": "2011-12-03T10:15:30Z", "customer": 1, "item": 2}
+{"stream_id": "123e4567-e89b-12d3-a456-426655440000", "context": ["customer_processing", "item_processing"], "type": "did something", "timestamp": "2011-12-03T10:15:30Z", "customer": 1, "item": 2}
+{"stream_id": "123e4567-e89b-12d3-a456-426655440000", "context": ["customer_processing", "item_processing"], "type": "did something else", "timestamp": "2011-12-03T10:15:30Z", "customer": 1, "item": 2}
+{"stream_id": "123e4567-e89b-12d3-a456-426655440000", "context": ["customer_processing", "item_processing"], "type": "finished", "timestamp": "2011-12-03T10:15:30Z", "execution_time": 100, "customer": 1, "item": 2}
+{"stream_id": "123e4567-e89b-12d3-a456-426655440000", "context": ["customer_processing", "exporting_file"], "type": "started", "timestamp": "2011-12-03T10:15:30Z", "customer": 1}
+{"stream_id": "123e4567-e89b-12d3-a456-426655440000", "context": ["customer_processing", "exporting_file"], "type": "finished", "execution_time": 200, "timestamp": "2011-12-03T10:15:30Z", "customer": 1}
+{"stream_id": "123e4567-e89b-12d3-a456-426655440000", "context": ["customer_processing"], "type": "finished", "execution_time": 400, "timestamp": "2011-12-03T10:15:30Z", "customer": 1}
