@@ -1,3 +1,5 @@
+![build status](https://api.travis-ci.org/lwoodson/gumshoe.svg?branch=master)
+
 # GumShoe
 A "gumshoe" is an old slang term for private detective or investigator.  Gumshoe
 the library is a mechanism for emitting arbitrary events from code for
