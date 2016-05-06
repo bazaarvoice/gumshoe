@@ -4,7 +4,7 @@ import java.util.Map;
 
 /**
  * Interface of objects that can be used to filter or throttle
- * events that are dispatched by GumShoe.
+ * events that are dispatched by Gumshoe.
  *
  * @author lance.woodson
  *

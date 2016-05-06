@@ -4,7 +4,7 @@ import java.util.Map;
 
 /**
  * Interface of objects that can serve as decorators within
- * GumShoe.  These take an event map and return a decorated
+ * Gumshoe.  These take an event map and return a decorated
  * result.  Can be used to globally inject all events with
  * some data you want to keep track of, like the hostname
  * where the application is running.

@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 import com.bazaarvoice.gumshoe.Configuration;
 import com.bazaarvoice.gumshoe.Decorator;
 import com.bazaarvoice.gumshoe.Filter;
-import com.bazaarvoice.gumshoe.GumShoe;
+import com.bazaarvoice.gumshoe.Gumshoe;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -23,11 +23,11 @@ public class SingleThreadedIntegrationTest extends Assert {
     private Decorator decorator;
     private InMemoryPublisher publisher;
     private Configuration configuration;
-    private GumShoe gumShoe;
+    private Gumshoe gumShoe;
 
     @BeforeMethod
     public void setUp() {
-        GumShoe.clear();
+        Gumshoe.clear();
         filter = mock(Filter.class);
         decorator = new TestDecorator();
         publisher = new InMemoryPublisher();
@@ -37,8 +37,8 @@ public class SingleThreadedIntegrationTest extends Assert {
         configuration.setDecorator(decorator);
         configuration.setPublisher(publisher);
 
-        GumShoe.configure(configuration);
-        gumShoe = GumShoe.get();
+        Gumshoe.configure(configuration);
+        gumShoe = Gumshoe.get();
 
         when(filter.shouldDispatch(anyMap())).thenReturn(true);
     }

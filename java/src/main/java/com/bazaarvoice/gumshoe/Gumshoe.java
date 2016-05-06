@@ -9,9 +9,9 @@ import java.util.Stack;
  * @author lance.woodson
  *
  */
-public class GumShoe {
+public class Gumshoe {
     private static Configuration configuration = new Configuration();
-    private static ThreadLocal<GumShoe> instances = new ThreadLocal<GumShoe>();
+    private static ThreadLocal<Gumshoe> instances = new ThreadLocal<Gumshoe>();
 
     /**
      * Configure GumeShoe with a configuration object
@@ -19,7 +19,7 @@ public class GumShoe {
      * @param configuration
      */
     public static void configure(Configuration configuration) {
-        GumShoe.configuration = configuration;
+        Gumshoe.configuration = configuration;
     }
 
     /**
@@ -33,17 +33,17 @@ public class GumShoe {
     }
 
     /**
-     * Get the thread-local instance of GumShoe.  Should be the
+     * Get the thread-local instance of Gumshoe.  Should be the
      * way any applications retrieve an instance.
      *
      * @return
      */
-    public static GumShoe get() {
-        GumShoe instance = instances.get();
+    public static Gumshoe get() {
+        Gumshoe instance = instances.get();
         if (instances.get() == null) {
             EventFactory eventFactory = new EventFactory();
             EventHandler eventHandler = new EventHandler(getConfiguration());
-            instance = new GumShoe(eventFactory, eventHandler);
+            instance = new Gumshoe(eventFactory, eventHandler);
             instances.set(instance);
         }
         return instance;
@@ -57,7 +57,7 @@ public class GumShoe {
     private EventHandler eventHandler;
     private Stack<Context> contexts;
 
-    private GumShoe(EventFactory eventFactory, EventHandler eventHandler) {
+    private Gumshoe(EventFactory eventFactory, EventHandler eventHandler) {
         this.eventFactory = eventFactory;
         this.eventHandler = eventHandler;
         contexts = new Stack<Context>();

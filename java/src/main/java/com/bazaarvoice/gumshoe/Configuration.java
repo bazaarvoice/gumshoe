@@ -1,7 +1,7 @@
 package com.bazaarvoice.gumshoe;
 
 /**
- * Configuration to control behavior of GumShoe.  Allows specification of:
+ * Configuration to control behavior of Gumshoe.  Allows specification of:
  *
  * - Filter used to filter out events emitted
  * - Decorator used to decorate all events with global data

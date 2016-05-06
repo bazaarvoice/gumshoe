@@ -1,34 +1,34 @@
-# GumShoe Java
-Java implementation of GumShoe.  Design and usage is consistent with the
+# Gumshoe Java
+Java implementation of Gumshoe.  Design and usage is consistent with the
 [cross-language readme](../README.md).
 
 ## Usage
-Bring GumShoe into your project as a maven dependency:
+Bring Gumshoe into your project as a maven dependency:
 
 ```
 to be written after release
 ```
 
 Somewhere duing your application's initialization, you need to configure
-GumShoe:
+Gumshoe:
 
 ```java
 Configuration config = new Configuration();
 // specify a Publisher, Filter and Decorator or use defaults
-GumShoe.configure(config);
+Gumshoe.configure(config);
 ```
 
 Within the business logic of your code, you need to:
 
-1.  Establish GumShoe context(s)
-2.  Store data in the GumShoe context.
-3.  Emit events using GumShoe.
+1.  Establish Gumshoe context(s)
+2.  Store data in the Gumshoe context.
+3.  Emit events using Gumshoe.
 4.  Profit!
 
 An example:
 
 ```java
-GumShoe gumshoe = GumShoe.get();
+Gumshoe gumshoe = Gumshoe.get();
 gumshoe.context("data_export").start();
 
 File csv = getCsvFile();
@@ -69,6 +69,6 @@ event would be emitted for that context.  If exceptions were caught when
 processing an item or a customer, a failed event would be emitted for those
 respective contexts.
 
-These events would be published according to the Publisher that GumShoe was
+These events would be published according to the Publisher that Gumshoe was
 configured with.  You could then observe/search through these events as
 allowed in whatever tools you use to consume them.

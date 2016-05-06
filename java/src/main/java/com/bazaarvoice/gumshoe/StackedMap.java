@@ -14,7 +14,7 @@ import java.util.Stack;
  * A stack of Maps that can be flattened into a single Map.  Key
  * collisions are handled so that a value higher in the stack is
  * used over a value lower in the stack.  Fundamental data structure
- * needed for GumShoe's context data association behavior.
+ * needed for Gumshoe's context data association behavior.
  *
  * @author lance.woodson
  *

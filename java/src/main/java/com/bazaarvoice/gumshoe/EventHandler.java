@@ -3,7 +3,7 @@ package com.bazaarvoice.gumshoe;
 import java.util.Map;
 
 /**
- * Processes and dispatches events for GumShoe by:
+ * Processes and dispatches events for Gumshoe by:
  *
  * - seeing if the event should be published
  * - decorating an event with global data

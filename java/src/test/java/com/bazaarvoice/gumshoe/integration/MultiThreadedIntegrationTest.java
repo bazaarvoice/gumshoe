@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 import com.bazaarvoice.gumshoe.Configuration;
 import com.bazaarvoice.gumshoe.Decorator;
 import com.bazaarvoice.gumshoe.Filter;
-import com.bazaarvoice.gumshoe.GumShoe;
+import com.bazaarvoice.gumshoe.Gumshoe;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -27,7 +27,7 @@ public class MultiThreadedIntegrationTest extends Assert {
 
     @BeforeMethod
     public void setUp() {
-        GumShoe.clear();
+        Gumshoe.clear();
         filter = mock(Filter.class);
         decorator = new TestDecorator();
         publisher = new InMemoryPublisher();
@@ -37,7 +37,7 @@ public class MultiThreadedIntegrationTest extends Assert {
         configuration.setDecorator(decorator);
         configuration.setPublisher(publisher);
 
-        GumShoe.configure(configuration);
+        Gumshoe.configure(configuration);
 
         when(filter.shouldDispatch(anyMap())).thenReturn(true);
     }
@@ -93,7 +93,7 @@ public class MultiThreadedIntegrationTest extends Assert {
 
         @Override
         public void run() {
-            GumShoe gumshoe = GumShoe.get();
+            Gumshoe gumshoe = Gumshoe.get();
             gumshoe.context("counter").put("name", name).start();
             for (int i = 0; i < number; i++) {
                 gumshoe.context().put("i", i);
