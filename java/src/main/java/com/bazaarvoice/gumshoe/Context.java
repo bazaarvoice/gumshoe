@@ -31,7 +31,7 @@ public class Context {
     private String name;
     private EventFactory eventFactory;
     private EventHandler eventDispatcher;
-    private Map<String, Object> data;
+    Map<String, Object> data;
     private Long startTime;
     private Long finishedTime;
 
@@ -164,6 +164,9 @@ public class Context {
         return finish("failed");
     }
 
+    public UUID getStreamId() {
+        return streamId;
+    }
 
     public String getName() {
         return name;
