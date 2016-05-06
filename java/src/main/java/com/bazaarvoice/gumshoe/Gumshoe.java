@@ -10,7 +10,7 @@ import java.util.Stack;
  *
  */
 public class Gumshoe {
-    private static Configuration configuration = new Configuration();
+    private static Configuration configuration;
     private static ThreadLocal<Gumshoe> instances = new ThreadLocal<Gumshoe>();
 
     /**
@@ -50,6 +50,8 @@ public class Gumshoe {
     }
 
     public static void clear() {
+        Gumshoe.configuration = null;
+        Gumshoe.instances = new ThreadLocal<Gumshoe>();
         instances.remove();
     }
 
