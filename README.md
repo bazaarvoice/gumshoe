@@ -54,7 +54,7 @@ for items in items_of(client):
   emit("did something")
   # do something else
   emit("did something else")
-  context().stop()
+  context().stop() # or could be context().fail()
 
 context("exporting_file").start()
 # build file
