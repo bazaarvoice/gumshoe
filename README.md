@@ -1,17 +1,17 @@
 ![build status](https://api.travis-ci.org/lwoodson/gumshoe.svg?branch=master)
 
-# GumShoe
+# Gumshoe
 A "gumshoe" is an old slang term for private detective or investigator.  Gumshoe
 the library is a mechanism for emitting arbitrary events from code for
 auditing and analysis.  Searching these events, you can see exactly what is
-happening in your code in production.  GumShoe provides the interface for
+happening in your code in production.  Gumshoe provides the interface for
 emitting these events in a JSON format, what consumes them and places them
 somewhere for auditing and analysis is left to other tools.
 
 ## Events
 Events are an occurence of something in your code.  They have a name, a
 timestamp and arbitrary data that is pertinent to your application and the
-specific event.  GumShoe puts no restrictions on you here.  The events will be
+specific event.  Gumshoe puts no restrictions on you here.  The events will be
 converted to JSON before they are emitted.
 
 ## Contexts
@@ -41,7 +41,7 @@ Contexts are thread local, and thus will play nice with multi-threaded
 applications.
 
 ## DSL
-A DSL is provided for easily using GumShoe.  This varies slightly from
+A DSL is provided for easily using Gumshoe.  This varies slightly from
 language to language, but in general its use is as follows:
 
 ```python
@@ -54,7 +54,7 @@ for items in items_of(client):
   emit("did something")
   # do something else
   emit("did something else")
-  context().stop()
+  context().stop() # or could be context().fail()
 
 context("exporting_file").start()
 # build file
@@ -184,24 +184,24 @@ before they are emitted.  This can be used to add environment information,
 such as the hostname where the application is running that emitted the
 event.  The default decorator adds the hostname, thread name and process
 user to all events.  You can define your own decorator and plug it into
-GumShoe to suit your needs.
+Gumshoe to suit your needs.
 
 ## Emitters
 Emitters are what broadcast events.  There are three offered out of the box:
 a standard out emitter, a dev null emitter and a log file emitter.  The
 log file emitter is useful to analyze the audit events using a log aggregation
 tool like the elasticsearch, logstash and kibana stack.  You can write your
-own emitter and plug it into GumShoe.
+own emitter and plug it into Gumshoe.
 
 ## Filters
 Filters are used to filter events.  If they evaluate to false, the event
 will not be emitted.  By default, no filters are in place, but you can
-define your own and add them to GumShoe for an application.  This is
+define your own and add them to Gumshoe for an application.  This is
 useful if you want to throttle the number of events emitted or for sampling.
 
 ## Configuration
 To override the out of the box defaults for decorators, emitters and filters,
-a configuration must be provided to GumShoe.
+a configuration must be provided to Gumshoe.
 
 ## Implementations
 There are two implementations currently provided --

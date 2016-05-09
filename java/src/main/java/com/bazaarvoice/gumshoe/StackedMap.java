@@ -11,10 +11,10 @@ import java.util.Set;
 import java.util.Stack;
 
 /**
- * A stack of Map's that can be flattened into a single Map.  Key
+ * A stack of Maps that can be flattened into a single Map.  Key
  * collisions are handled so that a value higher in the stack is
  * used over a value lower in the stack.  Fundamental data structure
- * needed for GumShoe's context data association behavior.
+ * needed for Gumshoe's context data association behavior.
  *
  * @author lance.woodson
  *
@@ -151,6 +151,9 @@ public class StackedMap<K, V> implements Map<K, V> {
         return flatten().keySet();
     }
 
+    /**
+     * Associate a value with the key in the map at the top of the stack
+     */
     public V put(K key, V value) {
         ensureMapInStack();
         stack.peek().put(key, value);
@@ -162,6 +165,10 @@ public class StackedMap<K, V> implements Map<K, V> {
         stack.peek().putAll(m);
     }
 
+    /**
+     * Remove the value associated with the key in the map at the top of the
+     * stack
+     */
     public V remove(Object key) {
         V result = null;
 
