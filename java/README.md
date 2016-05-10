@@ -72,3 +72,9 @@ respective contexts.
 These events would be published according to the Publisher that Gumshoe was
 configured with.  You could then observe/search through these events as
 allowed in whatever tools you use to consume them.
+
+## Dependencies
+Java Gumshoe is unobtrusive.  Its only dependency is on Gson version 2.6.2
+which has no external dependencies.  Its been tested to work Gson versions as
+old as 1.4, so if your project already has a Gson dependency, it most likely
+works with Gumshoe.
