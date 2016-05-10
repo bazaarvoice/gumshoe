@@ -16,17 +16,40 @@ public class SimpleConfiguration implements Configuration {
     private Decorator decorator;
     private Publisher publisher;
 
+    /**
+     * Create a new SimpleConfiguration for the application using a
+     * NoOpFilter, SimpleDecorator and PrintStreamPublisher to publish
+     * events to standard out.
+     *
+     * @param applicationName
+     */
     public SimpleConfiguration(String applicationName) {
         this.applicationName = applicationName;
-        // TODO wire up default implementations of Filter, Decorator
-        // and Publisher
+        this.filter = new NoOpFilter();
+        this.decorator = new SimpleDecorator();
+        this.publisher = new PrintStreamPublisher();
     }
-    
+
+    /**
+     * Create a new SimpleConfiguration for the application using
+     * a NoOpFilter, SimpleDecorator and EventLogPublisher that publishes
+     * events to the file at the specified path.
+     *
+     * @param applicationName
+     * @param logPath
+     */
+    public SimpleConfiguration(String applicationName, String logPath) {
+        this.applicationName = applicationName;
+        this.filter = new NoOpFilter();
+        this.decorator = new SimpleDecorator();
+        this.publisher = new EventLogPublisher(logPath);
+    }
+
     @Override
     public String getApplicationName() {
         return applicationName;
     }
-    
+
     @Override
     public Filter getFilter() {
         return filter;
