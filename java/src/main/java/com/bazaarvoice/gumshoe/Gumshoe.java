@@ -1,6 +1,7 @@
 package com.bazaarvoice.gumshoe;
 
 import java.util.Stack;
+import java.util.UUID;
 
 /**
  * Class of objects that an application uses to interact with Gumshoe.  Defines
@@ -10,8 +11,8 @@ import java.util.Stack;
  *
  */
 public class Gumshoe {
-    private static Configuration configuration = new Configuration();
-    private static ThreadLocal<Gumshoe> instances = new ThreadLocal<Gumshoe>();
+    static Configuration configuration;
+    static ThreadLocal<Gumshoe> instances = new ThreadLocal<Gumshoe>();
 
     /**
      * Configure GumeShoe with a configuration object
@@ -39,6 +40,10 @@ public class Gumshoe {
      * @return
      */
     public static Gumshoe get() {
+        if (configuration == null) {
+            throw new IllegalStateException("You need to initialize Gumshoe");
+        }
+
         Gumshoe instance = instances.get();
         if (instances.get() == null) {
             EventFactory eventFactory = new EventFactory();
@@ -50,17 +55,36 @@ public class Gumshoe {
     }
 
     public static void clear() {
+        Gumshoe.configuration = null;
+        Gumshoe.instances = new ThreadLocal<Gumshoe>();
         instances.remove();
     }
 
-    private EventFactory eventFactory;
-    private EventHandler eventHandler;
-    private Stack<Context> contexts;
+    EventFactory eventFactory;
+    EventHandler eventHandler;
+    Stack<Context> contexts;
 
     private Gumshoe(EventFactory eventFactory, EventHandler eventHandler) {
         this.eventFactory = eventFactory;
         this.eventHandler = eventHandler;
         contexts = new Stack<Context>();
+    }
+
+    /**
+     * Create a context with the given streamId and name
+     *
+     * @param streamId
+     * @param name
+     * @return
+     */
+    public Context context(UUID streamId, String name) {
+        if (!contexts.isEmpty()) {
+            throw new IllegalStateException("StreamId already set in within previous context");
+        }
+
+        Context context = new Context(streamId, name, eventFactory, eventHandler);
+        contexts.push(context);
+        return context;
     }
 
     /**

@@ -13,7 +13,7 @@ Somewhere duing your application's initialization, you need to configure
 Gumshoe:
 
 ```java
-Configuration config = new Configuration();
+Configuration config = new SimpleConfiguration("my-app");
 // specify a Publisher, Filter and Decorator or use defaults
 Gumshoe.configure(config);
 ```

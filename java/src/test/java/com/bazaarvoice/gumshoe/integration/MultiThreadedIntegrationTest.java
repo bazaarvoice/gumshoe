@@ -4,7 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.bazaarvoice.gumshoe.Configuration;
+import com.bazaarvoice.gumshoe.SimpleConfiguration;
 import com.bazaarvoice.gumshoe.Decorator;
 import com.bazaarvoice.gumshoe.Filter;
 import com.bazaarvoice.gumshoe.Gumshoe;
@@ -23,7 +23,7 @@ public class MultiThreadedIntegrationTest extends Assert {
     private Filter filter;
     private Decorator decorator;
     private InMemoryPublisher publisher;
-    private Configuration configuration;
+    private SimpleConfiguration configuration;
 
     @BeforeMethod
     public void setUp() {
@@ -32,7 +32,7 @@ public class MultiThreadedIntegrationTest extends Assert {
         decorator = new TestDecorator();
         publisher = new InMemoryPublisher();
 
-        configuration = new Configuration();
+        configuration = new SimpleConfiguration("MultiThreadedIntegrationTest");
         configuration.setFilter(filter);
         configuration.setDecorator(decorator);
         configuration.setPublisher(publisher);
