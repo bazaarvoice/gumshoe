@@ -37,6 +37,7 @@ public class EventLogPublisherTest extends Assert {
     public void testEventsPublishedAsJSONToFile() throws Exception {
         publisher.publish(event);
         String publishedEvents = new String(Files.readAllBytes(Paths.get(path)));
-        assertEquals(publishedEvents, "{\"a\":1,\"b\":2}\n");
+        assertTrue(publishedEvents.contains("\"a\":1"));
+        assertTrue(publishedEvents.contains("\"b\":2"));
     }
 }

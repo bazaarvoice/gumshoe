@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -29,6 +30,7 @@ public class PrintStreamPublisherTest extends Assert {
     public void ensurePublishSendsPrettyPrintedEventToPrintStream() {
         publisher.publish(event);
         String eventOutput = new String(outputStream.toByteArray());
-        assertEquals(eventOutput, "{\n  a: 1,\n  b: 2\n}\n");
+        assertTrue(eventOutput.contains("a: 1"));
+        assertTrue(eventOutput.contains("b: 2"));
     }
 }
