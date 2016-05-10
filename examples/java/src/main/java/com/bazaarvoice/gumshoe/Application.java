@@ -1,9 +1,6 @@
 package com.bazaarvoice.gumshoe;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Application  {
     /**
@@ -15,13 +12,19 @@ public class Application  {
      * @param args
      */
     public static void main( String[] args ) {
-        List<Vehicle> vehicles = Vehicle.generateRandom(100000);
+        Configuration configuration = new SimpleConfiguration("auto sales aggregator", "gumshoe.log");
+        Gumshoe.configure(configuration);
+        Gumshoe.get().context("session").start();
+
+        List<Vehicle> vehicles = Vehicle.generateRandom(1);
         AutoSalesAggregator aggregator = new AutoSalesAggregator(vehicles);
         List<Aggregation> aggregations = aggregator.aggregate();
 
+        Gumshoe.get().context("output").start();
         for (Aggregation aggregation : aggregations) {
             System.out.println(aggregation);
         }
+        Gumshoe.get().context().finish();
     }
 
 

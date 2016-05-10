@@ -44,11 +44,17 @@ public class Vehicle {
     }
 
     public static List<Vehicle> generateRandom(int count) {
+        Gumshoe.get().context("generating random vehicles")
+                     .put("count", count)
+                     .start();
+
         List<Vehicle> results = new ArrayList<Vehicle>();
 
         for (int i = 0; i < count; i++) {
             results.add(generateRandom());
         }
+
+        Gumshoe.get().context().finish();
 
         return results;
     }
