@@ -16,7 +16,7 @@ public class Application  {
         Gumshoe.configure(configuration);
         Gumshoe.get().context("session").start();
 
-        List<Vehicle> vehicles = Vehicle.generateRandom(1);
+        List<Vehicle> vehicles = Vehicle.generateRandom(getVehicleCount());
         AutoSalesAggregator aggregator = new AutoSalesAggregator(vehicles);
         List<Aggregation> aggregations = aggregator.aggregate();
 
@@ -27,5 +27,13 @@ public class Application  {
         Gumshoe.get().context().finish();
     }
 
+    private static int getVehicleCount() {
+        try {
+            String envValue = System.getenv("VEHICLES");
+            return Integer.parseInt(envValue);
+        } catch (NumberFormatException e) {
+            return 10;
+        }
+    }
 
 }
