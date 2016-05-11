@@ -12,7 +12,7 @@ public class Application  {
      * @param args
      */
     public static void main( String[] args ) {
-        Configuration configuration = new SimpleConfiguration("auto sales aggregator", "gumshoe.log");
+        Configuration configuration = new SimpleConfiguration("auto sales aggregator", "log/gumshoe.log");
         Gumshoe.configure(configuration);
         Gumshoe.get().context("session").start();
 
@@ -21,6 +21,7 @@ public class Application  {
         List<Aggregation> aggregations = aggregator.aggregate();
 
         Gumshoe.get().context("output").start();
+        System.out.println(String.format("Aggregating sales data for %s vehicles...", vehicles.size()));
         for (Aggregation aggregation : aggregations) {
             System.out.println(aggregation);
         }
@@ -29,8 +30,9 @@ public class Application  {
 
     private static int getVehicleCount() {
         try {
-            String envValue = System.getenv("VEHICLES");
-            return Integer.parseInt(envValue);
+            String envValue = System.getenv("MAX_VEHICLES");
+            int max = Integer.parseInt(envValue);
+            return (int)((max / 2) + (Math.random() * (max / 2)));
         } catch (NumberFormatException e) {
             return 10;
         }
