@@ -1,0 +1,11 @@
+* Add timestamp to log events (doh!)
+* Add application name to log events (doh!)
+* Prepend all auto-added event fields with $ (no underscore)
+* Push a copy of a context's data onto stack when starting
+* Modify emit to be called through the current context
+* Merge data from context into emit event.  i.e. support:
+  Gumshoe.get().context().put("a", 1).emit("test")
+  "a": 1 should only be used for that event.
+* Modify demo app to use emit in body of agg loop
+* Get repo forked to Bazaarvoice organization
+* Get maven artifact released in nexus
