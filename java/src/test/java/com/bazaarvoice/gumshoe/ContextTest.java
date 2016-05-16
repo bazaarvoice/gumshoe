@@ -18,6 +18,7 @@ public class ContextTest extends Assert {
 
     @BeforeMethod
     public void setUp() {
+        Gumshoe.configure(new SimpleConfiguration("test"));
         eventFactory = new EventFactory();
         eventHandler = mock(EventHandler.class);
         context = new Context("context one", eventFactory, eventHandler);

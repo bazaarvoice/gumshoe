@@ -34,6 +34,7 @@ public class Context {
     Map<String, Object> data;
     private Long startTime;
     private Long finishedTime;
+    Gumshoe governor;
 
     /**
      * Construct a context with the specified name, event factory and event dispatcher.
@@ -182,13 +183,14 @@ public class Context {
 
     private Context finish(String eventType) {
         if (!Status.STARTED.equals(getStatus())) {
-            throw new IllegalStateException("Cannot finish a context that has not been started");
+            throw new IllegalStateException(String.format("Cannot finish a context that has not been started: %s", getStatus()));
         }
 
         Map<String, Object> event = eventFactory.constructEvent(eventType);
         finishedTime = System.currentTimeMillis();
         event.put("execution_time", finishedTime - startTime);
         eventDispatcher.handle(event);
+        Gumshoe.get().pop();
         eventFactory.getDataStack().pop();
 
         return this;

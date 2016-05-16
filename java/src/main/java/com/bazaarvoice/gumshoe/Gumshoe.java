@@ -115,12 +115,20 @@ public class Gumshoe {
         return contexts.peek();
     }
 
+    Context pop() {
+        if (contexts.isEmpty()) {
+            return null;
+        } else {
+            return contexts.pop();
+        }
+    }
+
     /**
      * Finish all stacked contexts
      */
     public void finish() {
         while(!contexts.isEmpty()) {
-            contexts.pop().finish();
+            contexts.peek().finish();
         }
     }
 
