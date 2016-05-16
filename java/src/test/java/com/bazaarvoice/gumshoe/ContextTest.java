@@ -136,7 +136,7 @@ public class ContextTest extends Assert {
         event.put("_event_type", type);
 
         if (type.equals("finished") || type.equals("failed")) {
-            event.put("_execution_time", context.getFinishedTime() - context.getStartTime());
+            event.put("_elapsed", context.getFinishedTime() - context.getStartTime());
         }
 
         return event;

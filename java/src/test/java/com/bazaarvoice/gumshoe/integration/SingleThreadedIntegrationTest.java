@@ -125,7 +125,7 @@ public class SingleThreadedIntegrationTest extends Assert {
         assertEquals(event.get("_event_type"), type);
         assertEquals(event.get("test"), Boolean.TRUE);
         if (type.equals("finished")) {
-            assertTrue((Long)event.get("_execution_time") > 0);
+            assertTrue((Long)event.get("_elapsed") > 0);
         }
     }
 }

@@ -188,7 +188,7 @@ public class Context {
 
         Map<String, Object> event = eventFactory.constructEvent(eventType);
         finishedTime = System.currentTimeMillis();
-        event.put("_execution_time", finishedTime - startTime);
+        event.put("_elapsed", finishedTime - startTime);
         eventDispatcher.handle(event);
         Gumshoe.get().pop();
         eventFactory.getDataStack().pop();
