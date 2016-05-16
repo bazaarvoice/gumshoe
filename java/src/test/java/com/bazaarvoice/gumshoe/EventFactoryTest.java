@@ -23,7 +23,7 @@ public class EventFactoryTest extends Assert {
 
     @Test
     public void ensureConstructEventSetsEventType() {
-        assertEquals(event.get("type"), "test event");
+        assertEquals(event.get("$event_type"), "test event");
     }
 
     @Test

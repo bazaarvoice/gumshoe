@@ -26,7 +26,7 @@ public class SimpleConfiguration implements Configuration {
     public SimpleConfiguration(String applicationName) {
         this.applicationName = applicationName;
         this.filter = new NoOpFilter();
-        this.decorator = new SimpleDecorator();
+        this.decorator = new SimpleDecorator(applicationName);
         this.publisher = new PrintStreamPublisher();
     }
 
@@ -41,7 +41,7 @@ public class SimpleConfiguration implements Configuration {
     public SimpleConfiguration(String applicationName, String logPath) {
         this.applicationName = applicationName;
         this.filter = new NoOpFilter();
-        this.decorator = new SimpleDecorator();
+        this.decorator = new SimpleDecorator(applicationName);
         this.publisher = new EventLogPublisher(logPath);
     }
 

@@ -3,7 +3,10 @@ package com.bazaarvoice.gumshoe;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * Decorator that adds hostname, user, pid and thread to events.
@@ -12,21 +15,37 @@ import java.util.Map;
  *
  */
 public class SimpleDecorator implements Decorator {
+    public static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss,SSS");
+    static {
+        DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
+    }
+    private String applicationName;
     private String hostname;
     private String user;
     private String pid;
 
-    public SimpleDecorator() {
+    public SimpleDecorator(String applicationName) {
+        this.applicationName = applicationName;
     }
 
     @Override
     public Map<String, Object> decorate(Map<String, Object> event) {
-        event.put("_hostname", getHostname());
-        event.put("_user", getUser());
-        event.put("_pid", getPid());
-        event.put("_thread", getThreadName());
+        event.put("$application", getApplicationName());
+        event.put("$hostname", getHostname());
+        event.put("$user", getUser());
+        event.put("$pid", getPid());
+        event.put("$thread", getThreadName());
+        event.put("$emitted_at", getCurrentTime());
 
         return event;
+    }
+
+    private String getApplicationName() {
+        if (applicationName == null) {
+            return "UNKNOWN";
+        } else {
+            return applicationName;
+        }
     }
 
     private String getHostname() {
@@ -54,7 +73,7 @@ public class SimpleDecorator implements Decorator {
                 byte[] commandOutput = new byte[100];
                 Process proc = Runtime.getRuntime().exec(command);
                 proc.getInputStream().read(commandOutput);
-                pid = new String(commandOutput);
+                pid = new String(commandOutput).split("\n")[0];
             }
         } catch (IOException e) {
             pid = "UNKNOWN";
@@ -64,5 +83,9 @@ public class SimpleDecorator implements Decorator {
 
     private String getThreadName() {
         return Thread.currentThread().getName();
+    }
+
+    private String getCurrentTime() {
+        return DATE_FORMAT.format(System.currentTimeMillis());
     }
 }
