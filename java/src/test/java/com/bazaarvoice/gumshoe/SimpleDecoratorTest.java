@@ -42,4 +42,9 @@ public class SimpleDecoratorTest extends Assert {
     public void ensureEventsDecoratedWithThread() {
         assertEquals(event.get("_thread"), Thread.currentThread().getName());
     }
+    
+    @Test
+    public void ensureEventsDecoratedWithEmittedAtTimestamp() {
+        assertTrue(((String)event.get("_emitted_at")).matches("\\d\\d\\d\\d-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d,\\d\\d\\d"));
+    }
 }

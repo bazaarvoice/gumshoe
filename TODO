@@ -1,4 +1,3 @@
-* Add timestamp to log events (doh!)
 * Add application name to log events (doh!)
 * Prepend all auto-added event fields with $ (no underscore)
 * Push a copy of a context's data onto stack when starting

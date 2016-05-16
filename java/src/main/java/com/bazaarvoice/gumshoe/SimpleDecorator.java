@@ -3,7 +3,10 @@ package com.bazaarvoice.gumshoe;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * Decorator that adds hostname, user, pid and thread to events.
@@ -12,6 +15,10 @@ import java.util.Map;
  *
  */
 public class SimpleDecorator implements Decorator {
+    public static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss,SSS");
+    static {
+        DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
+    }
     private String hostname;
     private String user;
     private String pid;
@@ -25,6 +32,7 @@ public class SimpleDecorator implements Decorator {
         event.put("_user", getUser());
         event.put("_pid", getPid());
         event.put("_thread", getThreadName());
+        event.put("_emitted_at", getCurrentTime());
 
         return event;
     }
@@ -64,5 +72,9 @@ public class SimpleDecorator implements Decorator {
 
     private String getThreadName() {
         return Thread.currentThread().getName();
+    }
+    
+    private String getCurrentTime() {
+        return DATE_FORMAT.format(System.currentTimeMillis());
     }
 }
