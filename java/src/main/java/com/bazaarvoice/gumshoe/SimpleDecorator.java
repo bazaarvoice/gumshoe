@@ -84,7 +84,7 @@ public class SimpleDecorator implements Decorator {
     private String getThreadName() {
         return Thread.currentThread().getName();
     }
-    
+
     private String getCurrentTime() {
         return DATE_FORMAT.format(System.currentTimeMillis());
     }
