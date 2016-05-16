@@ -28,11 +28,11 @@ public class SimpleDecorator implements Decorator {
 
     @Override
     public Map<String, Object> decorate(Map<String, Object> event) {
-        event.put("_hostname", getHostname());
-        event.put("_user", getUser());
-        event.put("_pid", getPid());
-        event.put("_thread", getThreadName());
-        event.put("_emitted_at", getCurrentTime());
+        event.put("$hostname", getHostname());
+        event.put("$user", getUser());
+        event.put("$pid", getPid());
+        event.put("$thread", getThreadName());
+        event.put("$emitted_at", getCurrentTime());
 
         return event;
     }

@@ -65,10 +65,10 @@ public class Context {
         this.eventDispatcher = previous.eventDispatcher;
         this.data = new HashMap<String, Object>();
 
-        List<String> contexts = new ArrayList<String>((List<String>)previous.data.get("context"));
+        List<String> contexts = new ArrayList<String>((List<String>)previous.data.get("$context"));
         contexts.add(name);
-        this.data.put("context", contexts);
-        this.data.put("stream_id", streamId.toString());
+        this.data.put("$context", contexts);
+        this.data.put("$stream_id", streamId.toString());
     }
 
     /**
@@ -91,8 +91,8 @@ public class Context {
 
         List<String> contextPath = new ArrayList<String>();
         contextPath.add(name);
-        this.data.put("context", contextPath);
-        this.data.put("stream_id", streamId.toString());
+        this.data.put("$context", contextPath);
+        this.data.put("$stream_id", streamId.toString());
     }
 
     /**
@@ -188,7 +188,7 @@ public class Context {
 
         Map<String, Object> event = eventFactory.constructEvent(eventType);
         finishedTime = System.currentTimeMillis();
-        event.put("execution_time", finishedTime - startTime);
+        event.put("$execution_time", finishedTime - startTime);
         eventDispatcher.handle(event);
         Gumshoe.get().pop();
         eventFactory.getDataStack().pop();
