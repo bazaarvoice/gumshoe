@@ -51,8 +51,8 @@ public class SingleThreadedIntegrationTest extends Assert {
         gumShoe.context().finish();
 
         assertEquals(publisher.getEvents().size(), 2);
-        assertEvent(publisher.getEvents().get(0), contextPath("single_context_test"), "started");
-        assertEvent(publisher.getEvents().get(1), contextPath("single_context_test"), "finished");
+        assertEvent(publisher.getEvents().get(0), Attribute.asPath("single_context_test"), "started");
+        assertEvent(publisher.getEvents().get(1), Attribute.asPath("single_context_test"), "finished");
     }
 
     @Test
@@ -62,8 +62,8 @@ public class SingleThreadedIntegrationTest extends Assert {
         gumShoe.context().fail();
 
         assertEquals(publisher.getEvents().size(), 2);
-        assertEvent(publisher.getEvents().get(0), contextPath("single_failed_context"), "started");
-        assertEvent(publisher.getEvents().get(1), contextPath("single_failed_context"), "failed");
+        assertEvent(publisher.getEvents().get(0), Attribute.asPath("single_failed_context"), "started");
+        assertEvent(publisher.getEvents().get(1), Attribute.asPath("single_failed_context"), "failed");
     }
 
     @Test
@@ -77,11 +77,11 @@ public class SingleThreadedIntegrationTest extends Assert {
 
         assertEquals(publisher.getEvents().size(), 2);
 
-        assertEvent(publisher.getEvents().get(0), contextPath("single_context_with_data_test"), "started");
+        assertEvent(publisher.getEvents().get(0), Attribute.asPath("single_context_with_data_test"), "started");
         assertEquals(publisher.getEvents().get(0).get("foo"), "bar");
         assertEquals(publisher.getEvents().get(0).get("id"), 1);
 
-        assertEvent(publisher.getEvents().get(1), contextPath("single_context_with_data_test"), "finished");
+        assertEvent(publisher.getEvents().get(1), Attribute.asPath("single_context_with_data_test"), "finished");
         assertEquals(publisher.getEvents().get(1).get("foo"), "bar");
         assertEquals(publisher.getEvents().get(1).get("id"), 1);
     }
@@ -98,30 +98,26 @@ public class SingleThreadedIntegrationTest extends Assert {
 
         assertEquals(publisher.getEvents().size(), 6);
 
-        assertEvent(publisher.getEvents().get(0), contextPath("nested_contexts_test"), "started");
+        assertEvent(publisher.getEvents().get(0), Attribute.asPath("nested_contexts_test"), "started");
         assertEquals(publisher.getEvents().get(0).get("orientation"), "top");
 
-        assertEvent(publisher.getEvents().get(1), contextPath("nested_contexts_test"), "at_top");
+        assertEvent(publisher.getEvents().get(1), Attribute.asPath("nested_contexts_test"), "at_top");
         assertEquals(publisher.getEvents().get(1).get("orientation"), "top");
 
-        assertEvent(publisher.getEvents().get(2), contextPath("nested_contexts_test", "nested"), "started");
+        assertEvent(publisher.getEvents().get(2), Attribute.asPath("nested_contexts_test", "nested"), "started");
         assertEquals(publisher.getEvents().get(2).get("orientation"), "bottom");
 
-        assertEvent(publisher.getEvents().get(3), contextPath("nested_contexts_test", "nested"), "at_bottom");
+        assertEvent(publisher.getEvents().get(3), Attribute.asPath("nested_contexts_test", "nested"), "at_bottom");
         assertEquals(publisher.getEvents().get(3).get("orientation"), "bottom");
 
-        assertEvent(publisher.getEvents().get(4), contextPath("nested_contexts_test", "nested"), "finished");
+        assertEvent(publisher.getEvents().get(4), Attribute.asPath("nested_contexts_test", "nested"), "finished");
         assertEquals(publisher.getEvents().get(4).get("orientation"), "bottom");
 
-        assertEvent(publisher.getEvents().get(5), contextPath("nested_contexts_test"), "finished");
+        assertEvent(publisher.getEvents().get(5), Attribute.asPath("nested_contexts_test"), "finished");
         assertEquals(publisher.getEvents().get(5).get("orientation"), "top");
     }
 
-    private List<String> contextPath(String...elements) {
-        return Arrays.asList(elements);
-    }
-
-    private void assertEvent(Map<String, Object> event, List<String> context, String type) {
+    private void assertEvent(Map<String, Object> event, String context, String type) {
         assertEquals(event.get(Attribute.named("context")), context);
         assertEquals(event.get(Attribute.named("event_type")), type);
         assertEquals(event.get(Attribute.named("test")), Boolean.TRUE);

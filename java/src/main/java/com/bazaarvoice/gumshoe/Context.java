@@ -1,8 +1,6 @@
 package com.bazaarvoice.gumshoe;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -56,7 +54,6 @@ public class Context {
      * @param name
      * @param previous
      */
-    @SuppressWarnings("unchecked")
     public Context(String name, Context previous) {
         this(previous.streamId, name, previous.eventFactory, previous.eventDispatcher);
         this.streamId = previous.streamId;
@@ -64,10 +61,8 @@ public class Context {
         this.eventFactory = previous.eventFactory;
         this.eventDispatcher = previous.eventDispatcher;
         this.data = new HashMap<String, Object>();
-
-        List<String> contexts = new ArrayList<String>((List<String>)previous.data.get(Attribute.named("context")));
-        contexts.add(name);
-        this.data.put(Attribute.named("context"), contexts);
+        String previousContext = (String)previous.data.get(Attribute.named("context"));
+        this.data.put(Attribute.named("context"), Attribute.asPath(previousContext, name));
         this.data.put(Attribute.named("stream_id"), streamId.toString());
     }
 
@@ -89,9 +84,7 @@ public class Context {
         this.eventDispatcher = eventDispatcher;
         this.data = new HashMap<String, Object>();
 
-        List<String> contextPath = new ArrayList<String>();
-        contextPath.add(name);
-        this.data.put(Attribute.named("context"), contextPath);
+        this.data.put(Attribute.named("context"), Attribute.asPath(name));
         this.data.put(Attribute.named("stream_id"), streamId.toString());
     }
 
