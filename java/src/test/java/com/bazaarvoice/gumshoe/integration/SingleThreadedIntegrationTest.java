@@ -5,6 +5,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.bazaarvoice.gumshoe.SimpleConfiguration;
+import com.bazaarvoice.gumshoe.Attribute;
 import com.bazaarvoice.gumshoe.Decorator;
 import com.bazaarvoice.gumshoe.Filter;
 import com.bazaarvoice.gumshoe.Gumshoe;
@@ -121,11 +122,11 @@ public class SingleThreadedIntegrationTest extends Assert {
     }
 
     private void assertEvent(Map<String, Object> event, List<String> context, String type) {
-        assertEquals(event.get("_context"), context);
-        assertEquals(event.get("_event_type"), type);
-        assertEquals(event.get("test"), Boolean.TRUE);
+        assertEquals(event.get(Attribute.named("context")), context);
+        assertEquals(event.get(Attribute.named("event_type")), type);
+        assertEquals(event.get(Attribute.named("test")), Boolean.TRUE);
         if (type.equals("finished")) {
-            assertTrue((Long)event.get("_elapsed") > 0);
+            assertTrue((Long)event.get(Attribute.named("elapsed")) > 0);
         }
     }
 }

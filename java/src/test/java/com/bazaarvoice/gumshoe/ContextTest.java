@@ -32,7 +32,7 @@ public class ContextTest extends Assert {
 
     @Test
     public void ensureContextCreationSetsContext() {
-        assertEquals(context.data.get("_context"), Arrays.asList("context one"));
+        assertEquals(context.data.get(Attribute.named("context")), Arrays.asList("context one"));
     }
 
     @Test
@@ -42,7 +42,7 @@ public class ContextTest extends Assert {
 
     @Test
     public void ensureContextCreatedWithOtherContextAppendsNameToContext() {
-        assertEquals(secondContext.data.get("_context"), Arrays.asList("context one", "context two"));
+        assertEquals(secondContext.data.get(Attribute.named("context")), Arrays.asList("context one", "context two"));
     }
 
     @Test
@@ -131,12 +131,12 @@ public class ContextTest extends Assert {
 
     private Map<String, Object> buildExpectedEvent(Context context, String type) {
         Map<String, Object> event = new HashMap<String, Object>();
-        event.put("_stream_id", context.getStreamId().toString());
-        event.put("_context", Arrays.asList(context.getName()));
-        event.put("_event_type", type);
+        event.put(Attribute.named("stream_id"), context.getStreamId().toString());
+        event.put(Attribute.named("context"), Arrays.asList(context.getName()));
+        event.put(Attribute.named("event_type"), type);
 
         if (type.equals("finished") || type.equals("failed")) {
-            event.put("_elapsed", context.getFinishedTime() - context.getStartTime());
+            event.put(Attribute.named("elapsed"), context.getFinishedTime() - context.getStartTime());
         }
 
         return event;

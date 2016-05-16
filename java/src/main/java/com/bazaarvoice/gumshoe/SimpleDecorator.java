@@ -30,12 +30,12 @@ public class SimpleDecorator implements Decorator {
 
     @Override
     public Map<String, Object> decorate(Map<String, Object> event) {
-        event.put("_application", getApplicationName());
-        event.put("_hostname", getHostname());
-        event.put("_user", getUser());
-        event.put("_pid", getPid());
-        event.put("_thread", getThreadName());
-        event.put("_emitted_at", getCurrentTime());
+        event.put(Attribute.named("application"), getApplicationName());
+        event.put(Attribute.named("hostname"), getHostname());
+        event.put(Attribute.named("user"), getUser());
+        event.put(Attribute.named("pid"), getPid());
+        event.put(Attribute.named("thread"), getThreadName());
+        event.put(Attribute.named("emitted_at"), getCurrentTime());
 
         return event;
     }
