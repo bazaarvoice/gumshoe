@@ -54,7 +54,7 @@ public class SimpleDecorator implements Decorator {
                 byte[] commandOutput = new byte[100];
                 Process proc = Runtime.getRuntime().exec(command);
                 proc.getInputStream().read(commandOutput);
-                pid = new String(commandOutput);
+                pid = new String(commandOutput).split("\n")[0];
             }
         } catch (IOException e) {
             pid = "UNKNOWN";
