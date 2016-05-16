@@ -19,15 +19,18 @@ public class SimpleDecorator implements Decorator {
     static {
         DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
+    private String applicationName;
     private String hostname;
     private String user;
     private String pid;
 
-    public SimpleDecorator() {
+    public SimpleDecorator(String applicationName) {
+        this.applicationName = applicationName;
     }
 
     @Override
     public Map<String, Object> decorate(Map<String, Object> event) {
+        event.put("$application", getApplicationName());
         event.put("$hostname", getHostname());
         event.put("$user", getUser());
         event.put("$pid", getPid());
@@ -35,6 +38,14 @@ public class SimpleDecorator implements Decorator {
         event.put("$emitted_at", getCurrentTime());
 
         return event;
+    }
+
+    private String getApplicationName() {
+        if (applicationName == null) {
+            return "UNKNOWN";
+        } else {
+            return applicationName;
+        }
     }
 
     private String getHostname() {

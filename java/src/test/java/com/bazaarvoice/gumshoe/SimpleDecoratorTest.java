@@ -16,8 +16,13 @@ public class SimpleDecoratorTest extends Assert {
     @BeforeMethod
     public void setUp() {
         rawEvent = new HashMap<String, Object>();
-        decorator = new SimpleDecorator();
+        decorator = new SimpleDecorator("test-suite");
         event = decorator.decorate(rawEvent);
+    }
+
+    @Test
+    public void ensureEventsDecoratedWithAppName() {
+        assertEquals(event.get("$application"), "test-suite");
     }
 
     @Test
