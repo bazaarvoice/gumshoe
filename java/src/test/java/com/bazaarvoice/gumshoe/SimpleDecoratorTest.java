@@ -22,34 +22,34 @@ public class SimpleDecoratorTest extends Assert {
 
     @Test
     public void ensureEventsDecoratedWithAppName() {
-        assertEquals(event.get("$application"), "test-suite");
+        assertEquals(event.get("_application"), "test-suite");
     }
 
     @Test
     public void ensureEventsDecoratedWithHostname() throws Exception {
-        assertNotNull(event.get("$hostname"));
-        assertEquals(event.get("$hostname"), InetAddress.getLocalHost().getHostName());
+        assertNotNull(event.get("_hostname"));
+        assertEquals(event.get("_hostname"), InetAddress.getLocalHost().getHostName());
     }
 
     @Test
     public void ensureEventsDecoratedWithProcessUser() throws Exception {
-        assertNotNull(event.get("$user"));
-        assertEquals(event.get("$user"), System.getenv("USER"));
+        assertNotNull(event.get("_user"));
+        assertEquals(event.get("_user"), System.getenv("USER"));
     }
 
     @Test
     public void ensureEventsDecoratedWithPid() throws Exception {
-        assertNotNull(event.get("$pid"));
-        assertNotEquals(event.get("$pid"), "UNKNOWN");
+        assertNotNull(event.get("_pid"));
+        assertNotEquals(event.get("_pid"), "UNKNOWN");
     }
 
     @Test
     public void ensureEventsDecoratedWithThread() {
-        assertEquals(event.get("$thread"), Thread.currentThread().getName());
+        assertEquals(event.get("_thread"), Thread.currentThread().getName());
     }
 
     @Test
     public void ensureEventsDecoratedWithEmittedAtTimestamp() {
-        assertTrue(((String)event.get("$emitted_at")).matches("\\d\\d\\d\\d-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d,\\d\\d\\d"));
+        assertTrue(((String)event.get("_emitted_at")).matches("\\d\\d\\d\\d-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d,\\d\\d\\d"));
     }
 }

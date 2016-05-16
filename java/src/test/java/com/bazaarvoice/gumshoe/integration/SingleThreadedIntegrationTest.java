@@ -121,11 +121,11 @@ public class SingleThreadedIntegrationTest extends Assert {
     }
 
     private void assertEvent(Map<String, Object> event, List<String> context, String type) {
-        assertEquals(event.get("$context"), context);
-        assertEquals(event.get("$event_type"), type);
+        assertEquals(event.get("_context"), context);
+        assertEquals(event.get("_event_type"), type);
         assertEquals(event.get("test"), Boolean.TRUE);
-        if (type.equals("$finished")) {
-            assertTrue((Long)event.get("execution_time") > 0);
+        if (type.equals("finished")) {
+            assertTrue((Long)event.get("_execution_time") > 0);
         }
     }
 }
