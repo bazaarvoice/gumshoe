@@ -35,7 +35,7 @@ public  class EventFactory {
      */
     public Map<String, Object> constructEvent(String type) {
         Map<String, Object> event = new HashMap<String, Object>(getDataStack().flatten());
-        event.put("$event_type", type);
+        event.put("_event_type", type);
         return event;
     }
 }

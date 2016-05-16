@@ -67,18 +67,18 @@ public class MultiThreadedIntegrationTest extends Assert {
         }
 
         assertEquals(counter1Events.size(), 7);
-        String stream1Id = (String)counter1Events.get(0).get("$stream_id");
+        String stream1Id = (String)counter1Events.get(0).get("_stream_id");
         assertNotNull(stream1Id);
         for (Map<String, Object> event : counter1Events) {
-            assertEquals(event.get("$stream_id"), stream1Id);
+            assertEquals(event.get("_stream_id"), stream1Id);
         }
 
         assertEquals(counter2Events.size(), 7);
-        String stream2Id = (String)counter2Events.get(0).get("$stream_id");
+        String stream2Id = (String)counter2Events.get(0).get("_stream_id");
         assertNotNull(stream2Id);
         assertNotEquals(stream1Id, stream2Id);
         for (Map<String, Object> event : counter2Events) {
-            assertEquals(event.get("$stream_id"), stream2Id);
+            assertEquals(event.get("_stream_id"), stream2Id);
         }
     }
 
