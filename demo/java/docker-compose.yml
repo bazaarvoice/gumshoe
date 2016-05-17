@@ -1,0 +1,19 @@
+elasticsearch:
+  image: elasticsearch:2.3
+  ports:
+    - 9200:9200
+logstash:
+  image: logstash:2.1
+  volumes:
+    - ./log:/var/log/gumshoe
+    - ./ops/logstash.conf:/etc/logstash.conf
+    - ./ops/gumshoe-template.json:/etc/gumshoe-template.json
+  links:
+    - elasticsearch
+  command: logstash agent -f /etc/logstash.conf
+kibana:
+  image: kibana:4.3.1
+  links:
+    - elasticsearch
+  ports:
+    - 5601:5601
