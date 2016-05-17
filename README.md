@@ -9,10 +9,10 @@ emitting these events in a JSON format, what consumes them and places them
 somewhere for auditing and analysis is left to other tools.
 
 ## Events
-Events are an occurence of something in your code.  They have a name, a
-timestamp and arbitrary data that is pertinent to your application and the
-specific event.  Gumshoe puts no restrictions on you here.  The events will be
-converted to JSON before they are emitted.
+Events are an occurence of something in your code.  They have a name, an
+emitted_at timestamp and arbitrary data that is pertinent to your application
+and the specific event.  Gumshoe puts no restrictions on you here.  The events
+will be converted to JSON before they are emitted.
 
 ## Contexts
 Contexts have a name and store data that is included in events.  While a context
@@ -68,44 +68,44 @@ as follows:
 ```
 {
   "stream_id": "123e4567-e89b-12d3-a456-426655440000",
-  "context": ["customer_processing"],
+  "context": "customer_processing",
   "type": "started",
-  "timestamp": "2011-12-03T10:15:30Z",
+  "emitted_at": "2011-12-03T10:15:30Z",
   "customer": 1
 }
 
 {
   "stream_id": "123e4567-e89b-12d3-a456-426655440000",
-  "context": ["customer_processing", "item_processing"],
+  "context": "customer_processing > item_processing",
   "type": "started",
-  "timestamp": "2011-12-03T10:15:30Z",
+  "emitted_at": "2011-12-03T10:15:30Z",
   "customer": 1,
   "item": 1
 }
 
 {
   "stream_id": "123e4567-e89b-12d3-a456-426655440000",
-  "context": ["customer_processing", "item_processing"],
+  "context": "customer_processing > item_processing",
   "type": "did something",
-  "timestamp": "2011-12-03T10:15:30Z",
+  "emitted_at": "2011-12-03T10:15:30Z",
   "customer": 1,
   "item": 1
 }
 
 {
   "stream_id": "123e4567-e89b-12d3-a456-426655440000",
-  "context": ["customer_processing", "item_processing"],
+  "context": "customer_processing > item_processing",
   "type": "did something else",
-  "timestamp": "2011-12-03T10:15:30Z",
+  "emitted_at": "2011-12-03T10:15:30Z",
   "customer": 1,
   "item": 1
 }
 
 {
   "stream_id": "123e4567-e89b-12d3-a456-426655440000",
-  "context": ["customer_processing", "item_processing"],
+  "context": "customer_processing > item_processing",
   "type": "finished",
-  "timestamp": "2011-12-03T10:15:30Z",
+  "emitted_at": "2011-12-03T10:15:30Z",
   "execution_time": 100,
   "customer": 1,
   "item": 1
@@ -113,36 +113,36 @@ as follows:
 
 {
   "stream_id": "123e4567-e89b-12d3-a456-426655440000",
-  "context": ["customer_processing", "item_processing"],
+  "context": "customer_processing > item_processing",
   "type": "started",
-  "timestamp": "2011-12-03T10:15:30Z",
+  "emitted_at": "2011-12-03T10:15:30Z",
   "customer": 1,
   "item": 2
 }
 
 {
   "stream_id": "123e4567-e89b-12d3-a456-426655440000",
-  "context": ["customer_processing", "item_processing"],
+  "context": "customer_processing > item_processing",
   "type": "did something",
-  "timestamp": "2011-12-03T10:15:30Z",
+  "emitted_at": "2011-12-03T10:15:30Z",
   "customer": 1,
   "item": 2
 }
 
 {
   "stream_id": "123e4567-e89b-12d3-a456-426655440000",
-  "context": ["customer_processing", "item_processing"],
+  "context": "customer_processing > item_processing",
   "type": "did something else",
-  "timestamp": "2011-12-03T10:15:30Z",
+  "emitted_at": "2011-12-03T10:15:30Z",
   "customer": 1,
   "item": 2
 }
 
 {
   "stream_id": "123e4567-e89b-12d3-a456-426655440000",
-  "context": ["customer_processing", "item_processing"],
+  "context": "customer_processing > item_processing",
   "type": "finished",
-  "timestamp": "2011-12-03T10:15:30Z",
+  "emitted_at": "2011-12-03T10:15:30Z",
   "execution_time": 100,
   "customer": 1,
   "item": 2
@@ -150,27 +150,27 @@ as follows:
 
 {
   "stream_id": "123e4567-e89b-12d3-a456-426655440000",
-  "context": ["customer_processing", "exporting_file"],
+  "context": "customer_processing > exporting_file",
   "type": "started",
-  "timestamp": "2011-12-03T10:15:30Z",
+  "emitted_at": "2011-12-03T10:15:30Z",
   "customer": 1
 }
 
 {
   "stream_id": "123e4567-e89b-12d3-a456-426655440000",
-  "context": ["customer_processing", "exporting_file"],
+  "context": "customer_processing > exporting_file",
   "type": "finished",
   "execution_time": 200,
-  "timestamp": "2011-12-03T10:15:30Z",
+  "emitted_at": "2011-12-03T10:15:30Z",
   "customer": 1
 }
 
 {
   "stream_id": "123e4567-e89b-12d3-a456-426655440000",
-  "context": ["customer_processing"],
+  "context": "customer_processing",
   "type": "finished",
   "execution_time": 400,
-  "timestamp": "2011-12-03T10:15:30Z",
+  "emitted_at": "2011-12-03T10:15:30Z",
   "customer": 1
 }
 ```
@@ -206,3 +206,7 @@ a configuration must be provided to Gumshoe.
 ## Implementations
 There are two implementations currently provided --
 [Java](java/README.md) and [Python](python/README.md).
+
+## Concrete Example
+A concrete example of Gumshoe in action can be found within the [demo Java
+application](demo/java).
