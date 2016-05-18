@@ -18,9 +18,9 @@ public class Application  {
         long start = System.currentTimeMillis();
         long end = start + (getSecondsToRun() * 1000);
 
-        Gumshoe.get().context("session").start();
+        Gumshoe.get().context("application").start();
         while(System.currentTimeMillis() < end) {
-            Gumshoe.get().context("iteration").start();
+            Gumshoe.get().context("session").start();
             List<Vehicle> vehicles = Vehicle.generateRandom(getVehicleCount());
             AutoSalesAggregator aggregator = new AutoSalesAggregator(vehicles);
             List<Aggregation> aggregations = aggregator.aggregate();
@@ -30,6 +30,7 @@ public class Application  {
             for (Aggregation aggregation : aggregations) {
                 System.out.println(aggregation);
             }
+            Gumshoe.get().context().finish();
             Gumshoe.get().context().finish();
         }
         Gumshoe.get().context().finish();

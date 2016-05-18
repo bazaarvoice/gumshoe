@@ -204,4 +204,9 @@ public class Context {
 
         return this;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Context(%s)", name);
+    }
 }

@@ -45,7 +45,7 @@ public class AutoSalesAggregator {
 
     private void aggregateVehicleData(Map<Manufacturer, ManufacturerAggregation> manufacturerAggs,
             Map<Type, TypeAggregation> typeAggs, Map<Model, ModelAggregation> modelAggs) {
-        Gumshoe.get().context("processing vehicles").start();
+        Gumshoe.get().context("collecting vehicle data").start();
 
         for (Vehicle vehicle : vehicles) {
             pauseAMoment();
