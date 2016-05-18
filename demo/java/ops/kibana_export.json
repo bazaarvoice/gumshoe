@@ -6,8 +6,8 @@
       "title": "Demo Dashboard",
       "hits": 0,
       "description": "",
-      "panelsJSON": "[{\"col\":1,\"id\":\"All-Vehicles-Examined\",\"panelIndex\":1,\"row\":1,\"size_x\":3,\"size_y\":2,\"type\":\"visualization\"},{\"col\":4,\"id\":\"Vehicles-Examined\",\"panelIndex\":2,\"row\":1,\"size_x\":9,\"size_y\":2,\"type\":\"visualization\"},{\"col\":1,\"id\":\"Manufacturer-Breakdown\",\"panelIndex\":3,\"row\":3,\"size_x\":2,\"size_y\":2,\"type\":\"visualization\"},{\"col\":1,\"id\":\"Type-Breakdown\",\"panelIndex\":4,\"row\":5,\"size_x\":2,\"size_y\":2,\"type\":\"visualization\"},{\"col\":1,\"id\":\"Model-Breakdown\",\"panelIndex\":5,\"row\":7,\"size_x\":2,\"size_y\":2,\"type\":\"visualization\"},{\"id\":\"Vehicles-Examined-2\",\"type\":\"search\",\"panelIndex\":6,\"size_x\":10,\"size_y\":6,\"col\":3,\"row\":3,\"columns\":[\"gs$stream_id\",\"gs$context\",\"gs$event_type\",\"gs$elapsed\",\"manufacturer\",\"vehicle_type\",\"model\"],\"sort\":[\"gs$emitted_at\",\"asc\"]}]",
-      "optionsJSON": "{\"darkTheme\":true}",
+      "panelsJSON": "[{\"col\":1,\"id\":\"Sessions\",\"panelIndex\":1,\"row\":1,\"size_x\":2,\"size_y\":2,\"type\":\"visualization\"},{\"col\":3,\"id\":\"Vehicles-Examined\",\"panelIndex\":2,\"row\":1,\"size_x\":2,\"size_y\":2,\"type\":\"visualization\"},{\"col\":1,\"id\":\"Manufacturer-Breakdown\",\"panelIndex\":3,\"row\":3,\"size_x\":1,\"size_y\":2,\"type\":\"visualization\"},{\"col\":2,\"id\":\"Processed-Vs-Failed\",\"panelIndex\":4,\"row\":3,\"size_x\":11,\"size_y\":2,\"type\":\"visualization\"},{\"col\":1,\"id\":\"Vehicle-Type-Breakdown\",\"panelIndex\":5,\"row\":5,\"size_x\":1,\"size_y\":2,\"type\":\"visualization\"},{\"col\":1,\"id\":\"Model-Breakdown\",\"panelIndex\":6,\"row\":7,\"size_x\":1,\"size_y\":4,\"type\":\"visualization\"},{\"col\":2,\"columns\":[\"gs$stream_id\",\"gs$event_type\",\"manufacturer\",\"vehicle_type\",\"model\",\"cost\",\"MSRP\",\"purchase_price\"],\"id\":\"all-vehicles\",\"panelIndex\":7,\"row\":5,\"size_x\":11,\"size_y\":8,\"sort\":[\"gs$emitted_at\",\"desc\"],\"type\":\"search\"},{\"id\":\"Total-Purchase-Price\",\"type\":\"visualization\",\"panelIndex\":8,\"size_x\":4,\"size_y\":2,\"col\":9,\"row\":1},{\"id\":\"Total-Cost\",\"type\":\"visualization\",\"panelIndex\":9,\"size_x\":4,\"size_y\":2,\"col\":5,\"row\":1}]",
+      "optionsJSON": "{\"darkTheme\":false}",
       "uiStateJSON": "{}",
       "version": 1,
       "timeRestore": false,
@@ -17,86 +17,121 @@
     }
   },
   {
-    "_id": "Vehicles-Examined-2",
+    "_id": "vehicle-processed",
     "_type": "search",
     "_source": {
-      "title": "Vehicles Examined 2",
+      "title": "vehicle processed",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "_source"
+      ],
+      "sort": [
+        "gs$emitted_at",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"gumshoe-*\",\"filter\":[{\"meta\":{\"negate\":false,\"index\":\"gumshoe-*\",\"key\":\"gs$context\",\"value\":\"session > collecting vehicle data\",\"disabled\":false,\"alias\":null},\"query\":{\"match\":{\"gs$context\":{\"query\":\"session > collecting vehicle data\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}},{\"meta\":{\"negate\":false,\"index\":\"gumshoe-*\",\"key\":\"gs$event_type\",\"value\":\"processed_vehicle\",\"disabled\":false,\"alias\":null},\"query\":{\"match\":{\"gs$event_type\":{\"query\":\"processed_vehicle\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}}],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647},\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}}}"
+      }
+    }
+  },
+  {
+    "_id": "vehicle-failed",
+    "_type": "search",
+    "_source": {
+      "title": "vehicle failed",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "_source"
+      ],
+      "sort": [
+        "gs$emitted_at",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"gumshoe-*\",\"filter\":[{\"meta\":{\"negate\":false,\"index\":\"gumshoe-*\",\"key\":\"gs$context\",\"value\":\"session > collecting vehicle data\",\"disabled\":false,\"alias\":null},\"query\":{\"match\":{\"gs$context\":{\"query\":\"session > collecting vehicle data\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}},{\"meta\":{\"negate\":false,\"index\":\"gumshoe-*\",\"key\":\"gs$event_type\",\"value\":\"failed_vehicle\",\"disabled\":false,\"alias\":null},\"query\":{\"match\":{\"gs$event_type\":{\"query\":\"failed_vehicle\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}}],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647},\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}}}"
+      }
+    }
+  },
+  {
+    "_id": "finished-sessions",
+    "_type": "search",
+    "_source": {
+      "title": "finished sessions",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "_source"
+      ],
+      "sort": [
+        "gs$emitted_at",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"gumshoe-*\",\"filter\":[{\"meta\":{\"negate\":false,\"index\":\"gumshoe-*\",\"key\":\"gs$context\",\"value\":\"session\",\"disabled\":false,\"alias\":null},\"query\":{\"match\":{\"gs$context\":{\"query\":\"session\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}},{\"meta\":{\"negate\":false,\"index\":\"gumshoe-*\",\"key\":\"gs$event_type\",\"value\":\"finished\",\"disabled\":false,\"alias\":null},\"query\":{\"match\":{\"gs$event_type\":{\"query\":\"finished\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}}],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647},\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}}}"
+      }
+    }
+  },
+  {
+    "_id": "sessions",
+    "_type": "search",
+    "_source": {
+      "title": "sessions",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "_source"
+      ],
+      "sort": [
+        "gs$emitted_at",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"gumshoe-*\",\"filter\":[{\"meta\":{\"negate\":false,\"index\":\"gumshoe-*\",\"key\":\"gs$context\",\"value\":\"session\",\"disabled\":false,\"alias\":null},\"query\":{\"match\":{\"gs$context\":{\"query\":\"session\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}}],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647},\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}}}"
+      }
+    }
+  },
+  {
+    "_id": "all-vehicles",
+    "_type": "search",
+    "_source": {
+      "title": "all vehicles",
       "description": "",
       "hits": 0,
       "columns": [
         "gs$stream_id",
-        "gs$context",
         "gs$event_type",
-        "gs$elapsed",
         "manufacturer",
         "vehicle_type",
-        "model"
+        "model",
+        "cost",
+        "MSRP",
+        "purchase_price"
       ],
       "sort": [
         "gs$emitted_at",
-        "asc"
+        "desc"
       ],
       "version": 1,
       "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"gumshoe-*\",\"filter\":[{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":null,\"disabled\":false,\"index\":\"gumshoe-*\",\"key\":\"gs$context\",\"negate\":false,\"value\":\"session > processing vehicles > collecting vehicle data\"},\"query\":{\"match\":{\"gs$context\":{\"query\":\"session > processing vehicles > collecting vehicle data\",\"type\":\"phrase\"}}}},{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":null,\"disabled\":false,\"index\":\"gumshoe-*\",\"key\":\"gs$event_type\",\"negate\":false,\"value\":\"finished\"},\"query\":{\"match\":{\"gs$event_type\":{\"query\":\"finished\",\"type\":\"phrase\"}}}}],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647},\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"*\"}}}"
+        "searchSourceJSON": "{\"index\":\"gumshoe-*\",\"filter\":[{\"meta\":{\"negate\":false,\"index\":\"gumshoe-*\",\"key\":\"gs$context\",\"value\":\"session > collecting vehicle data\",\"disabled\":false,\"alias\":null},\"query\":{\"match\":{\"gs$context\":{\"query\":\"session > collecting vehicle data\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}},{\"meta\":{\"negate\":false,\"index\":\"gumshoe-*\",\"key\":\"query\",\"value\":\"{\\\"bool\\\":{\\\"should\\\":[{\\\"term\\\":{\\\"gs$event_type\\\":\\\"processed_vehicle\\\"}},{\\\"term\\\":{\\\"gs$event_type\\\":\\\"failed_vehicle\\\"}}]}}\",\"disabled\":false,\"alias\":\"processed and failed\"},\"query\":{\"bool\":{\"should\":[{\"term\":{\"gs$event_type\":\"processed_vehicle\"}},{\"term\":{\"gs$event_type\":\"failed_vehicle\"}}]}},\"$state\":{\"store\":\"appState\"}}],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647},\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}}}"
       }
     }
   },
   {
-    "_id": "Vehicles-Examined",
-    "_type": "search",
-    "_source": {
-      "title": "Vehicles Examined",
-      "description": "",
-      "hits": 0,
-      "columns": [
-        "gs$stream_id",
-        "gs$context",
-        "gs$event_type",
-        "gs$elapsed"
-      ],
-      "sort": [
-        "gs$emitted_at",
-        "asc"
-      ],
-      "version": 1,
-      "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"gumshoe-*\",\"filter\":[{\"meta\":{\"negate\":false,\"index\":\"gumshoe-*\",\"key\":\"gs$context\",\"value\":\"session > processing vehicles > collecting vehicle data\",\"disabled\":false,\"alias\":null},\"query\":{\"match\":{\"gs$context\":{\"query\":\"session > processing vehicles > collecting vehicle data\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}},{\"meta\":{\"negate\":false,\"index\":\"gumshoe-*\",\"key\":\"gs$event_type\",\"value\":\"finished\",\"disabled\":false,\"alias\":null},\"query\":{\"match\":{\"gs$event_type\":{\"query\":\"finished\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}}],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647},\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}}}"
-      }
-    }
-  },
-  {
-    "_id": "All-Events",
-    "_type": "search",
-    "_source": {
-      "title": "All Events",
-      "description": "",
-      "hits": 0,
-      "columns": [
-        "gs$stream_id",
-        "gs$context",
-        "gs$event_type",
-        "gs$elapsed"
-      ],
-      "sort": [
-        "gs$emitted_at",
-        "asc"
-      ],
-      "version": 1,
-      "kibanaSavedObjectMeta": {
-        "searchSourceJSON": "{\"index\":\"gumshoe-*\",\"filter\":[],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647},\"query\":{\"query_string\":{\"query\":\"*\",\"analyze_wildcard\":true}}}"
-      }
-    }
-  },
-  {
-    "_id": "Vehicles-Examined",
+    "_id": "Processed-Vs-Failed",
     "_type": "visualization",
     "_source": {
-      "title": "Vehicles Examined",
-      "visState": "{\"type\":\"area\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"smoothLines\":false,\"scale\":\"linear\",\"interpolate\":\"linear\",\"mode\":\"stacked\",\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":false,\"setYExtents\":false,\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"gs$emitted_at\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}},{\"id\":\"3\",\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"manufacturer.raw\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\"}}],\"listeners\":{}}",
+      "title": "Processed Vs Failed",
+      "visState": "{\"type\":\"area\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"smoothLines\":false,\"scale\":\"linear\",\"interpolate\":\"linear\",\"mode\":\"percentage\",\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":true,\"setYExtents\":false,\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"gs$emitted_at\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}},{\"id\":\"3\",\"type\":\"terms\",\"schema\":\"group\",\"params\":{\"field\":\"gs$event_type\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\"}}],\"listeners\":{}}",
       "uiStateJSON": "{}",
       "description": "",
-      "savedSearchId": "Vehicles-Examined",
+      "savedSearchId": "all-vehicles",
       "version": 1,
       "kibanaSavedObjectMeta": {
         "searchSourceJSON": "{\"filter\":[]}"
@@ -111,7 +146,7 @@
       "visState": "{\"type\":\"pie\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"isDonut\":false},\"aggs\":[{\"id\":\"1\",\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"manufacturer.raw\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\"}}],\"listeners\":{}}",
       "uiStateJSON": "{}",
       "description": "",
-      "savedSearchId": "Vehicles-Examined",
+      "savedSearchId": "all-vehicles",
       "version": 1,
       "kibanaSavedObjectMeta": {
         "searchSourceJSON": "{\"filter\":[]}"
@@ -119,14 +154,44 @@
     }
   },
   {
-    "_id": "Type-Breakdown",
+    "_id": "Vehicles-Examined",
     "_type": "visualization",
     "_source": {
-      "title": "Type Breakdown",
-      "visState": "{\"type\":\"pie\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"isDonut\":false},\"aggs\":[{\"id\":\"1\",\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"vehicle_type.raw\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\"}}],\"listeners\":{}}",
+      "title": "Vehicles Examined",
+      "visState": "{\"type\":\"metric\",\"params\":{\"fontSize\":60},\"aggs\":[{\"id\":\"1\",\"type\":\"count\",\"schema\":\"metric\",\"params\":{}}],\"listeners\":{}}",
       "uiStateJSON": "{}",
       "description": "",
-      "savedSearchId": "Vehicles-Examined",
+      "savedSearchId": "all-vehicles",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "Sessions",
+    "_type": "visualization",
+    "_source": {
+      "title": "Sessions",
+      "visState": "{\"type\":\"metric\",\"params\":{\"fontSize\":60},\"aggs\":[{\"id\":\"1\",\"type\":\"count\",\"schema\":\"metric\",\"params\":{}}],\"listeners\":{}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "savedSearchId": "sessions",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "Vehicle-Type-Breakdown",
+    "_type": "visualization",
+    "_source": {
+      "title": "Vehicle Type Breakdown",
+      "visState": "{\"type\":\"pie\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"isDonut\":false},\"aggs\":[{\"id\":\"1\",\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"vehicle_type.raw\",\"size\":10,\"order\":\"desc\",\"orderBy\":\"1\"}}],\"listeners\":{}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "savedSearchId": "all-vehicles",
       "version": 1,
       "kibanaSavedObjectMeta": {
         "searchSourceJSON": "{\"filter\":[]}"
@@ -138,10 +203,10 @@
     "_type": "visualization",
     "_source": {
       "title": "Model Breakdown",
-      "visState": "{\"type\":\"pie\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"isDonut\":false},\"aggs\":[{\"id\":\"1\",\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"model.raw\",\"size\":5,\"order\":\"desc\",\"orderBy\":\"1\"}}],\"listeners\":{}}",
+      "visState": "{\"type\":\"pie\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"isDonut\":false},\"aggs\":[{\"id\":\"1\",\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"model.raw\",\"size\":50,\"order\":\"desc\",\"orderBy\":\"1\"}}],\"listeners\":{}}",
       "uiStateJSON": "{}",
       "description": "",
-      "savedSearchId": "Vehicles-Examined",
+      "savedSearchId": "all-vehicles",
       "version": 1,
       "kibanaSavedObjectMeta": {
         "searchSourceJSON": "{\"filter\":[]}"
@@ -149,14 +214,29 @@
     }
   },
   {
-    "_id": "All-Vehicles-Examined",
+    "_id": "Total-Cost",
     "_type": "visualization",
     "_source": {
-      "title": "All Vehicles Examined",
-      "visState": "{\"type\":\"metric\",\"params\":{\"fontSize\":60},\"aggs\":[{\"id\":\"1\",\"type\":\"count\",\"schema\":\"metric\",\"params\":{}}],\"listeners\":{}}",
+      "title": "Total Cost",
+      "visState": "{\"type\":\"metric\",\"params\":{\"fontSize\":60},\"aggs\":[{\"id\":\"1\",\"type\":\"sum\",\"schema\":\"metric\",\"params\":{\"field\":\"cost\"}}],\"listeners\":{}}",
       "uiStateJSON": "{}",
       "description": "",
-      "savedSearchId": "Vehicles-Examined",
+      "savedSearchId": "vehicle-processed",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "Total-Purchase-Price",
+    "_type": "visualization",
+    "_source": {
+      "title": "Total Purchase Price",
+      "visState": "{\"type\":\"metric\",\"params\":{\"fontSize\":60},\"aggs\":[{\"id\":\"1\",\"type\":\"sum\",\"schema\":\"metric\",\"params\":{\"field\":\"purchase_price\"}}],\"listeners\":{}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "savedSearchId": "vehicle-processed",
       "version": 1,
       "kibanaSavedObjectMeta": {
         "searchSourceJSON": "{\"filter\":[]}"

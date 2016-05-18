@@ -18,7 +18,6 @@ public class Application  {
         long start = System.currentTimeMillis();
         long end = start + (getSecondsToRun() * 1000);
 
-        Gumshoe.get().context("application").start();
         while(System.currentTimeMillis() < end) {
             Gumshoe.get().context("session").start();
             List<Vehicle> vehicles = Vehicle.generateRandom(getVehicleCount());
@@ -33,7 +32,6 @@ public class Application  {
             Gumshoe.get().context().finish();
             Gumshoe.get().context().finish();
         }
-        Gumshoe.get().context().finish();
     }
 
     private static int getVehicleCount() {
