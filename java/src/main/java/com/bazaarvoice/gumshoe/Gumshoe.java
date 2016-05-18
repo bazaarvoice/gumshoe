@@ -139,6 +139,6 @@ public class Gumshoe {
      * @param type
      */
     public void emit(String type) {
-        eventHandler.handle(eventFactory.constructEvent(type));
+        contexts.peek().emit(type);
     }
 }

@@ -97,9 +97,37 @@ public class ContextTest extends Assert {
         assertEquals(eventFactory.getDataStack().get("foo"), "bar");
     }
 
+    @Test(expectedExceptions={IllegalStateException.class})
+    public void ensureEmitFailsIfContextNotStarted() {
+        context.emit("test");
+    }
+
+    @Test
+    public void ensureEmitSendsEventToDispatcher() {
+        context.start();
+
+        context.emit("test");
+
+        verify(eventHandler).handle(buildExpectedEvent(context, "started"));
+        verify(eventHandler).handle(buildExpectedEvent(context, "test"));
+    }
+
+    @Test
+    public void ensureEmitContainsNewData() {
+        context.start().put("foo", "bar");
+
+        context.emit("test");
+
+        verify(eventHandler).handle(buildExpectedEvent(context, "started"));
+        Map<String, Object> expectedTestEvent = buildExpectedEvent(context, "test");
+        expectedTestEvent.put("foo", "bar");
+        verify(eventHandler).handle(expectedTestEvent);
+    }
+
     @Test
     public void ensureFinishSendsFinishedEventToDispatcher() {
         context.start();
+        context.put("should_not", "be_in_finished_event");
         context.finish();
 
         verify(eventHandler).handle(buildExpectedEvent(context, "started"));

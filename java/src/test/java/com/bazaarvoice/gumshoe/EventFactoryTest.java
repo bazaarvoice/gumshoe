@@ -18,16 +18,28 @@ public class EventFactoryTest extends Assert {
         data = new HashMap<String, Object>();
         data.put("foo", "bar");
         factory.getDataStack().push(data);
-        event = factory.constructEvent("test event");
     }
 
     @Test
     public void ensureConstructEventSetsEventType() {
+        event = factory.constructEvent("test event");
+
         assertEquals(event.get(Attribute.named("event_type")), "test event");
     }
 
     @Test
-    public void ensureConstructEventIncludesOtherData() {
+    public void ensureConstructEventIncludesStackData() {
+        event = factory.constructEvent("test event");
+
         assertEquals(event.get("foo"), "bar");
+    }
+
+    @Test
+    public void ensureConstructedEventIncludesOtherData() {
+        Map<String, Object> otherData = new HashMap<String, Object>();
+        otherData.put("bar", "baz");
+        event = factory.constructEvent("test event", otherData);
+
+        assertEquals(event.get("bar"), "baz");
     }
 }
