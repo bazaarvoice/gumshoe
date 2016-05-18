@@ -1,15 +1,23 @@
 package com.bazaarvoice.gumshoe;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class AutoSalesAggregator {
     private List<Vehicle> vehicles;
+    private List<String> errorMessages;
 
     public AutoSalesAggregator(List<Vehicle> vehicles) {
         this.vehicles = vehicles;
+        this.errorMessages = Arrays.asList(
+            "Insufficient data",
+            "Malformed data",
+            "Dependent service unavailable",
+            "Unknown"
+        );
     }
 
     public List<Aggregation> aggregate() {
@@ -40,27 +48,56 @@ public class AutoSalesAggregator {
         Gumshoe.get().context("processing vehicles").start();
 
         for (Vehicle vehicle : vehicles) {
-            // TODO should not have to start a context here, should just emit 1 event when processing
-            Gumshoe.get().context("collecting vehicle data")
-                         .put("manufacturer", vehicle.getManufacturer())
-                         .put("vehicle_type", vehicle.getType())
-                         .put("model", vehicle.getModel())
-                         .start();
+            pauseAMoment();
+            Gumshoe.get().context().put("manufacturer", vehicle.getManufacturer())
+                                   .put("vehicle_type", vehicle.getType())
+                                   .put("model", vehicle.getModel())
+                                   .put("cost", vehicle.getCost())
+                                   .put("MSRP", vehicle.getMSRP())
+                                   .put("purchase_price", vehicle.getPurchasePrice());
 
-            addToAggregation(vehicle, manufacturerAggs.get(vehicle.getManufacturer()));
-            addToAggregation(vehicle, typeAggs.get(vehicle.getType()));
-            addToAggregation(vehicle, modelAggs.get(vehicle.getModel()));
-
-            Gumshoe.get().context().finish();
+            try {
+                addToAggregation(vehicle, manufacturerAggs.get(vehicle.getManufacturer()));
+                addToAggregation(vehicle, typeAggs.get(vehicle.getType()));
+                addToAggregation(vehicle, modelAggs.get(vehicle.getModel()));
+                Gumshoe.get().emit("processed_vehicle");
+            } catch (RuntimeException e) {
+                Gumshoe.get().context().put("error_message", e.getMessage())
+                                       .emit("failed_vehicle");
+            }
         }
 
         Gumshoe.get().context().finish();
     }
 
     private void addToAggregation(Vehicle vehicle, Aggregation modelAgg) {
+        // Simulate some errors
+        if (shouldError()) {
+            throw new RuntimeException(randomErrorMessage());
+        }
+
         modelAgg.addTotalCost(vehicle.getCost());
         modelAgg.addTotalMSRP(vehicle.getMSRP());
         modelAgg.addTotalSalesPrice(vehicle.getPurchasePrice());
+    }
+
+    private void pauseAMoment() {
+        int duration = (int)(Math.random() * 10);
+        try {
+            Thread.sleep(duration);
+        } catch (InterruptedException e) {
+            // do nothing
+        }
+    }
+
+    private boolean shouldError() {
+        // Maintain ~2% error rate
+        return ((Math.random() * 100) < 2);
+    }
+
+    private String randomErrorMessage() {
+        int index = (int)(Math.random() * errorMessages.size());
+        return errorMessages.get(index);
     }
 
     private Map<Model, ModelAggregation> buildModelAggregations() {

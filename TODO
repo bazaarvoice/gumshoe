@@ -1,2 +1,2 @@
-* Modify demo app to use emit in body of agg loop
+* Fix context bug
 * Get maven artifact released in nexus

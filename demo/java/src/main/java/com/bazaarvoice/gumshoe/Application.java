@@ -14,28 +14,42 @@ public class Application  {
     public static void main( String[] args ) {
         Configuration configuration = new SimpleConfiguration("auto sales aggregator", "log/gumshoe.log");
         Gumshoe.configure(configuration);
+
+        long start = System.currentTimeMillis();
+        long end = start + (getSecondsToRun() * 1000);
+
         Gumshoe.get().context("session").start();
+        while(System.currentTimeMillis() < end) {
+            Gumshoe.get().context("iteration").start();
+            List<Vehicle> vehicles = Vehicle.generateRandom(getVehicleCount());
+            AutoSalesAggregator aggregator = new AutoSalesAggregator(vehicles);
+            List<Aggregation> aggregations = aggregator.aggregate();
 
-        List<Vehicle> vehicles = Vehicle.generateRandom(getVehicleCount());
-        AutoSalesAggregator aggregator = new AutoSalesAggregator(vehicles);
-        List<Aggregation> aggregations = aggregator.aggregate();
-
-        Gumshoe.get().context("output").start();
-        System.out.println(String.format("Aggregating sales data for %s vehicles...", vehicles.size()));
-        for (Aggregation aggregation : aggregations) {
-            System.out.println(aggregation);
+            Gumshoe.get().context("output").start();
+            System.out.println(String.format("Aggregating sales data for %s vehicles...", vehicles.size()));
+            for (Aggregation aggregation : aggregations) {
+                System.out.println(aggregation);
+            }
+            Gumshoe.get().context().finish();
         }
         Gumshoe.get().context().finish();
     }
 
     private static int getVehicleCount() {
-        try {
-            String envValue = System.getenv("MAX_VEHICLES");
-            int max = Integer.parseInt(envValue);
-            return (int)((max / 2) + (Math.random() * (max / 2)));
-        } catch (NumberFormatException e) {
-            return 10;
-        }
+        int max = getEnvValueOrDefault("MAX_VEHICLES", 10);
+        return (int)((max / 2) + (Math.random() * (max / 2)));
     }
 
+    private static int getSecondsToRun() {
+        return getEnvValueOrDefault("SECONDS", 60);
+    }
+
+    private static int getEnvValueOrDefault(String envVariable, int defaultValue) {
+        try {
+            String envValue = System.getenv(envVariable);
+            return Integer.parseInt(envValue);
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
+    }
 }
