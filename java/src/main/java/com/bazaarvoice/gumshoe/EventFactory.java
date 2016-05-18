@@ -34,7 +34,20 @@ public  class EventFactory {
      * @return
      */
     public Map<String, Object> constructEvent(String type) {
+        return constructEvent(type, new HashMap<String, Object>());
+    }
+
+    /**
+     * Construct an event of a type including a merge of all data in
+     * the stack and data passed to the method call.
+     *
+     * @param type
+     * @param data
+     * @return
+     */
+    public Map<String, Object> constructEvent(String type, Map<String, Object> data) {
         Map<String, Object> event = new HashMap<String, Object>(getDataStack().flatten());
+        event.putAll(data);
         event.put(Attribute.named("event_type"), type);
         return event;
     }

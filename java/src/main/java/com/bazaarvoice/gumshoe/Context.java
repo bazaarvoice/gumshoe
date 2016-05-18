@@ -131,8 +131,24 @@ public class Context {
         }
 
         startTime = System.currentTimeMillis();
-        eventFactory.getDataStack().push(data);
+        eventFactory.getDataStack().push(new HashMap<String, Object>(data));
         Map<String, Object> event = eventFactory.constructEvent("started");
+        eventDispatcher.handle(event);
+
+        return this;
+    }
+
+    /**
+     * Emits an event within the current context
+     *
+     * @return
+     */
+    public Context emit(String type) {
+        if (!Status.STARTED.equals(getStatus())) {
+            throw new IllegalStateException(String.format("Cannot emit events for a context that has not been started: %s", getStatus()));
+        }
+
+        Map<String, Object> event = eventFactory.constructEvent(type, data);
         eventDispatcher.handle(event);
 
         return this;
@@ -187,5 +203,10 @@ public class Context {
         eventFactory.getDataStack().pop();
 
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Context(%s)", name);
     }
 }
