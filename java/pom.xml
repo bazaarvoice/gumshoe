@@ -21,6 +21,12 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
+  <scm>
+    <connection>scm:git:git@github.com:bazaarvoice/gumshoe</connection>
+    <developerConnection>scm:git:git@github.com:bazaarvoice/gumshoe</developerConnection>
+    <url>github.com:bazaarvoice/gumshoe</url>
+  </scm>
+
   <dependencies>
     <dependency>
       <groupId>com.google.code.gson</groupId>
