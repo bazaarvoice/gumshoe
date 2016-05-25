@@ -51,7 +51,7 @@ public class MultiThreadedIntegrationTest extends Assert {
         counter1.start();
         counter2.start();
 
-        Thread.sleep(1000);
+        Thread.sleep(2500);
 
         List<Map<String, Object>> events = publisher.getEvents();
         assertEquals(events.size(), 14);
