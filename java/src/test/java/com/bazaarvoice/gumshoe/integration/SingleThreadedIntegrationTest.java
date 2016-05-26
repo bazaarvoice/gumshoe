@@ -16,6 +16,9 @@ import static org.mockito.Mockito.when;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+
+import javax.lang.model.type.NullType;
 
 import static org.mockito.Mockito.anyMap;
 
@@ -115,6 +118,39 @@ public class SingleThreadedIntegrationTest extends Assert {
 
         assertEvent(publisher.getEvents().get(5), Attribute.asPath("nested_contexts_test"), "finished");
         assertEquals(publisher.getEvents().get(5).get("orientation"), "top");
+    }
+
+    @Test
+    public void ensureInContextFiresStartedAndFinishedEvents() throws Exception {
+        gumShoe.inContext("in_context", new Callable<NullType>() {
+            @Override
+            public NullType call()
+                    throws Exception {
+                Thread.sleep(5);
+                return null;
+            }
+        });
+
+        assertEquals(publisher.getEvents().size(), 2);
+        assertEvent(publisher.getEvents().get(0), Attribute.asPath("in_context"), "started");
+        assertEvent(publisher.getEvents().get(1), Attribute.asPath("in_context"), "finished");
+    }
+
+    @Test
+    public void ensureInContextFiresFailedEventOnException() {
+        try {
+            gumShoe.inContext("in_context", new Callable<NullType>() {
+                @Override
+                public NullType call()
+                        throws Exception {
+                    throw new Exception("oops");
+                }
+            });
+        } catch (Exception e) {}
+
+        assertEquals(publisher.getEvents().size(), 2);
+        assertEvent(publisher.getEvents().get(0), Attribute.asPath("in_context"), "started");
+        assertEvent(publisher.getEvents().get(1), Attribute.asPath("in_context"), "failed");
     }
 
     private void assertEvent(Map<String, Object> event, String context, String type) {

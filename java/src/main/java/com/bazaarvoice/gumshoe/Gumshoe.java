@@ -2,6 +2,7 @@ package com.bazaarvoice.gumshoe;
 
 import java.util.Stack;
 import java.util.UUID;
+import java.util.concurrent.Callable;
 
 /**
  * Class of objects that an application uses to interact with Gumshoe.  Defines
@@ -113,6 +114,47 @@ public class Gumshoe {
      */
     public Context context() {
         return contexts.peek();
+    }
+
+    /**
+     * Executes the Callable within the identified and named context and returns the
+     * result. If the callable executes normally, the context will be finished
+     * immediately before the return.  If the callable raises an exception, the context
+     * will be failed.
+     *
+     * @param name
+     * @param logic
+     * @return
+     */
+    public <T> T inContext(UUID streamId, String name, Callable<T> logic) throws Exception {
+        if (streamId == null) {
+            context(name).start();
+        } else {
+            context(streamId, name).start();
+        }
+
+        try {
+            T result = logic.call();
+            context().finish();
+            return result;
+        } catch (Exception e) {
+            context().fail();
+            throw e;
+        }
+    }
+
+    /**
+     * Executes the Callable within the named context and returns the result.
+     * If the callable executes normally, the context will be finished immediately
+     * before the return.  If the callable raises an exception, the context will
+     * be failed.
+     *
+     * @param name
+     * @param logic
+     * @return
+     */
+    public <T> T inContext(String name, Callable<T> logic) throws Exception {
+        return inContext(null, name, logic);
     }
 
     Context pop() {
