@@ -1,4 +1,4 @@
-![build status](https://api.travis-ci.org/lwoodson/gumshoe.svg?branch=master)
+[![Build Status](https://travis-ci.org/bazaarvoice/gumshoe.svg?branch=master)](https://travis-ci.org/bazaarvoice/gumshoe)
 
 # Gumshoe
 A "gumshoe" is an old slang term for private detective or investigator.  Gumshoe
