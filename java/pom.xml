@@ -10,7 +10,7 @@
 
   <groupId>com.bazaarvoice</groupId>
   <artifactId>gumshoe</artifactId>
-  <version>1.3-SNAPSHOT</version>
+  <version>1.3</version>
   <packaging>jar</packaging>
 
   <name>gumshoe</name>
@@ -24,7 +24,7 @@
     <connection>scm:git:git@github.com:bazaarvoice/gumshoe</connection>
     <developerConnection>scm:git:git@github.com:bazaarvoice/gumshoe</developerConnection>
     <url>github.com:bazaarvoice/gumshoe</url>
-    <tag>HEAD</tag>
+    <tag>gumshoe-1.3</tag>
   </scm>
 
   <dependencies>
