@@ -33,7 +33,6 @@ public class Context {
     Map<String, Object> data;
     private Long startTime;
     private Long finishedTime;
-    Gumshoe governor;
 
     /**
      * Construct a context with the specified name, event factory and event dispatcher.

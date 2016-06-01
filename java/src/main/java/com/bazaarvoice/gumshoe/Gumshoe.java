@@ -104,8 +104,8 @@ public class Gumshoe {
         } else {
             context = new Context(name, contexts.peek());
         }
-        contexts.push(context);
         ensureContextStackDepthNotExceeeded();
+        contexts.push(context);
 
         return context;
     }
@@ -188,7 +188,7 @@ public class Gumshoe {
     }
 
     private void ensureContextStackDepthNotExceeeded() {
-        if (contexts.size() > maxContextStackDepth) {
+        if (contexts.size() >= maxContextStackDepth) {
             throw new ContextStackDepthException(maxContextStackDepth);
         }
     }
