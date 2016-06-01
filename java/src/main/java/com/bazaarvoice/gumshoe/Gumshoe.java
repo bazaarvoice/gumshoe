@@ -46,10 +46,10 @@ public class Gumshoe {
         }
 
         Gumshoe instance = instances.get();
-        if (instances.get() == null) {
+        if (instance == null) {
             EventFactory eventFactory = new EventFactory();
             EventHandler eventHandler = new EventHandler(getConfiguration());
-            instance = new Gumshoe(eventFactory, eventHandler);
+            instance = new Gumshoe(eventFactory, eventHandler, configuration.getMaxContextStackDepth());
             instances.set(instance);
         }
         return instance;
@@ -64,10 +64,12 @@ public class Gumshoe {
     EventFactory eventFactory;
     EventHandler eventHandler;
     Stack<Context> contexts;
+    int maxContextStackDepth;
 
-    private Gumshoe(EventFactory eventFactory, EventHandler eventHandler) {
+    private Gumshoe(EventFactory eventFactory, EventHandler eventHandler, int maxContextStackDepth) {
         this.eventFactory = eventFactory;
         this.eventHandler = eventHandler;
+        this.maxContextStackDepth = maxContextStackDepth;
         contexts = new Stack<Context>();
     }
 
@@ -83,7 +85,7 @@ public class Gumshoe {
             throw new IllegalStateException("StreamId already set in within previous context");
         }
 
-        Context context = new Context(streamId, name, eventFactory, eventHandler);
+        Context context = new Context(this, streamId, name, eventFactory, eventHandler);
         contexts.push(context);
         return context;
     }
@@ -98,10 +100,11 @@ public class Gumshoe {
         Context context;
 
         if (contexts.isEmpty()) {
-            context = new Context(name, eventFactory, eventHandler);
+            context = new Context(this, name, eventFactory, eventHandler);
         } else {
             context = new Context(name, contexts.peek());
         }
+        ensureContextStackDepthNotExceeeded();
         contexts.push(context);
 
         return context;
@@ -182,5 +185,11 @@ public class Gumshoe {
      */
     public void emit(String type) {
         contexts.peek().emit(type);
+    }
+
+    private void ensureContextStackDepthNotExceeeded() {
+        if (contexts.size() >= maxContextStackDepth) {
+            throw new ContextStackDepthException(maxContextStackDepth);
+        }
     }
 }

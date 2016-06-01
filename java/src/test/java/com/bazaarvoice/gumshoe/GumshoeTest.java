@@ -135,4 +135,12 @@ public class GumshoeTest extends Assert {
         //  one start event, one emit event
         verify(publisher, times(2)).publish(anyMap());
     }
+
+    @Test(expectedExceptions={ContextStackDepthException.class})
+    public void ensureMaxContextStackDepthEnforcedWhenCreatingContextByName() {
+        Gumshoe.configure(configuration);
+        for (int i = 0; i < Gumshoe.getConfiguration().getMaxContextStackDepth() + 1; i++) {
+            Gumshoe.get().context("ctx" + i);
+        }
+    }
 }

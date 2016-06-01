@@ -15,11 +15,13 @@ public class SimpleConfiguration implements Configuration {
     private Filter filter;
     private Decorator decorator;
     private Publisher publisher;
+    private int maxContextStackDepth;
 
     /**
      * Create a new SimpleConfiguration for the application using a
      * NoOpFilter, SimpleDecorator and PrintStreamPublisher to publish
-     * events to standard out.
+     * events to standard out.  A maximum context stack depth of 50
+     * will be enforced.
      *
      * @param applicationName
      */
@@ -28,12 +30,14 @@ public class SimpleConfiguration implements Configuration {
         this.filter = new NoOpFilter();
         this.decorator = new SimpleDecorator(applicationName);
         this.publisher = new PrintStreamPublisher();
+        this.maxContextStackDepth = 50;
     }
 
     /**
      * Create a new SimpleConfiguration for the application using
      * a NoOpFilter, SimpleDecorator and EventLogPublisher that publishes
-     * events to the file at the specified path.
+     * events to the file at the specified path.  A max context stack depth
+     * of 50 will be enforced.
      *
      * @param applicationName
      * @param logPath
@@ -43,6 +47,7 @@ public class SimpleConfiguration implements Configuration {
         this.filter = new NoOpFilter();
         this.decorator = new SimpleDecorator(applicationName);
         this.publisher = new EventLogPublisher(logPath);
+        this.maxContextStackDepth = 50;
     }
 
     @Override
@@ -75,5 +80,14 @@ public class SimpleConfiguration implements Configuration {
 
     public void setPublisher(Publisher publisher) {
         this.publisher = publisher;
+    }
+
+    @Override
+    public int getMaxContextStackDepth() {
+        return maxContextStackDepth;
+    }
+
+    public void setMaxContextStackDepth(int maxContentStackDepth) {
+        this.maxContextStackDepth = maxContentStackDepth;
     }
 }

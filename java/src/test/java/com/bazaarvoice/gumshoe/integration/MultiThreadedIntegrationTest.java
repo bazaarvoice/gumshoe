@@ -43,7 +43,7 @@ public class MultiThreadedIntegrationTest extends Assert {
         when(filter.shouldDispatch(anyMap())).thenReturn(true);
     }
 
-    @Test(enabled=false)
+    @Test
     public void test() throws Exception {
         Counter counter1 = new Counter("counter1", 5);
         Counter counter2 = new Counter("counter2", 5);
@@ -51,10 +51,15 @@ public class MultiThreadedIntegrationTest extends Assert {
         counter1.start();
         counter2.start();
 
-        Thread.sleep(2500);
-
+        long startTime = System.currentTimeMillis();
         List<Map<String, Object>> events = publisher.getEvents();
-        assertEquals(events.size(), 14);
+        do {
+            if ((System.currentTimeMillis() - startTime) > 15000) {
+                fail("Did not receive 14 events within 15 seconds");
+            }
+            events = publisher.getEvents();
+            Thread.sleep(25);
+        } while (events.size() < 14);
 
         List<Map<String, Object>> counter1Events = new ArrayList<Map<String,Object>>();
         List<Map<String, Object>> counter2Events = new ArrayList<Map<String,Object>>();
