@@ -43,7 +43,7 @@ public class MultiThreadedIntegrationTest extends Assert {
         when(filter.shouldDispatch(anyMap())).thenReturn(true);
     }
 
-    @Test(enabled=false)
+    @Test
     public void test() throws Exception {
         Counter counter1 = new Counter("counter1", 5);
         Counter counter2 = new Counter("counter2", 5);

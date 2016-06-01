@@ -46,7 +46,7 @@ public class Gumshoe {
         }
 
         Gumshoe instance = instances.get();
-        if (instances.get() == null) {
+        if (instance == null) {
             EventFactory eventFactory = new EventFactory();
             EventHandler eventHandler = new EventHandler(getConfiguration());
             instance = new Gumshoe(eventFactory, eventHandler);
@@ -83,7 +83,7 @@ public class Gumshoe {
             throw new IllegalStateException("StreamId already set in within previous context");
         }
 
-        Context context = new Context(streamId, name, eventFactory, eventHandler);
+        Context context = new Context(this, streamId, name, eventFactory, eventHandler);
         contexts.push(context);
         return context;
     }
@@ -98,7 +98,7 @@ public class Gumshoe {
         Context context;
 
         if (contexts.isEmpty()) {
-            context = new Context(name, eventFactory, eventHandler);
+            context = new Context(this, name, eventFactory, eventHandler);
         } else {
             context = new Context(name, contexts.peek());
         }

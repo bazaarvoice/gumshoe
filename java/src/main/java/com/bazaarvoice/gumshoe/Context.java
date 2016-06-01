@@ -25,6 +25,7 @@ public class Context {
     public static enum Status {
         CREATED, STARTED, FINISHED;
     }
+    private Gumshoe gumshoe;
     private UUID streamId;
     private String name;
     private EventFactory eventFactory;
@@ -43,8 +44,8 @@ public class Context {
      * @param eventFactory
      * @param eventDispatcher
      */
-    public Context(String name, EventFactory eventFactory, EventHandler eventDispatcher) {
-        this(UUID.randomUUID(), name, eventFactory, eventDispatcher);
+    public Context(Gumshoe gumshoe, String name, EventFactory eventFactory, EventHandler eventDispatcher) {
+        this(gumshoe, UUID.randomUUID(), name, eventFactory, eventDispatcher);
     }
 
     /**
@@ -55,7 +56,7 @@ public class Context {
      * @param previous
      */
     public Context(String name, Context previous) {
-        this(previous.streamId, name, previous.eventFactory, previous.eventDispatcher);
+        this(previous.gumshoe, previous.streamId, name, previous.eventFactory, previous.eventDispatcher);
         this.streamId = previous.streamId;
         this.name = name;
         this.eventFactory = previous.eventFactory;
@@ -77,7 +78,8 @@ public class Context {
      * @param eventFactory
      * @param eventDispatcher
      */
-    public Context(UUID streamId, String name, EventFactory eventFactory, EventHandler eventDispatcher) {
+    public Context(Gumshoe gumshoe, UUID streamId, String name, EventFactory eventFactory, EventHandler eventDispatcher) {
+        this.gumshoe = gumshoe;
         this.streamId = streamId;
         this.name = name;
         this.eventFactory = eventFactory;
@@ -199,7 +201,7 @@ public class Context {
         finishedTime = System.currentTimeMillis();
         event.put(Attribute.named("elapsed"), finishedTime - startTime);
         eventDispatcher.handle(event);
-        Gumshoe.get().pop();
+        gumshoe.pop();
         eventFactory.getDataStack().pop();
 
         return this;
