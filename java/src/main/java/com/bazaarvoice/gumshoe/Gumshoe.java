@@ -49,7 +49,7 @@ public class Gumshoe {
         if (instance == null) {
             EventFactory eventFactory = new EventFactory();
             EventHandler eventHandler = new EventHandler(getConfiguration());
-            instance = new Gumshoe(eventFactory, eventHandler);
+            instance = new Gumshoe(eventFactory, eventHandler, configuration.getMaxContextStackDepth());
             instances.set(instance);
         }
         return instance;
@@ -64,10 +64,12 @@ public class Gumshoe {
     EventFactory eventFactory;
     EventHandler eventHandler;
     Stack<Context> contexts;
+    int maxContextStackDepth;
 
-    private Gumshoe(EventFactory eventFactory, EventHandler eventHandler) {
+    private Gumshoe(EventFactory eventFactory, EventHandler eventHandler, int maxContextStackDepth) {
         this.eventFactory = eventFactory;
         this.eventHandler = eventHandler;
+        this.maxContextStackDepth = maxContextStackDepth;
         contexts = new Stack<Context>();
     }
 
@@ -103,6 +105,7 @@ public class Gumshoe {
             context = new Context(name, contexts.peek());
         }
         contexts.push(context);
+        ensureContextStackDepthNotExceeeded();
 
         return context;
     }
@@ -182,5 +185,11 @@ public class Gumshoe {
      */
     public void emit(String type) {
         contexts.peek().emit(type);
+    }
+
+    private void ensureContextStackDepthNotExceeeded() {
+        if (contexts.size() > maxContextStackDepth) {
+            throw new ContextStackDepthException(maxContextStackDepth);
+        }
     }
 }
