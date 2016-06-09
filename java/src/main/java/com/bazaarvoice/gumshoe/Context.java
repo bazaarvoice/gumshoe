@@ -175,6 +175,30 @@ public class Context {
         return finish("failed");
     }
 
+    /**
+     * Finish the context, emitting a failed event and include details about the passed exception
+     * as follows:
+     *
+     * exception:  The exception class name
+     * failure_message:  The message of the exception
+     * root_exception:  The Throwable class name of the cause
+     * root_failure_message:  The message of the throwable cause of the exception
+     *
+     * @param exception
+     * @return
+     */
+    public Context fail(Exception exception) {
+        data.put(Attribute.named("exception"), exception.getClass().getName());
+        data.put(Attribute.named("failure_message"), exception.getMessage());
+        if (exception.getCause() != null) {
+            Throwable root = exception.getCause();
+            data.put(Attribute.named("root_exception"), root.getClass().getName());
+            data.put(Attribute.named("root_failure_message"), root.getMessage());
+        }
+
+        return finish("failed", data);
+    }
+
     public UUID getStreamId() {
         return streamId;
     }
@@ -192,11 +216,15 @@ public class Context {
     }
 
     private Context finish(String eventType) {
+        return finish(eventType, new HashMap<String, Object>());
+    }
+
+    private Context finish(String eventType, Map<String, Object> additionalData) {
         if (!Status.STARTED.equals(getStatus())) {
             throw new IllegalStateException(String.format("Cannot finish a context that has not been started: %s", getStatus()));
         }
 
-        Map<String, Object> event = eventFactory.constructEvent(eventType);
+        Map<String, Object> event = eventFactory.constructEvent(eventType, additionalData);
         finishedTime = System.currentTimeMillis();
         event.put(Attribute.named("elapsed"), finishedTime - startTime);
         eventDispatcher.handle(event);

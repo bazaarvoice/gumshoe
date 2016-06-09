@@ -151,6 +151,24 @@ public class ContextTest extends Assert {
     }
 
     @Test
+    public void ensureFailWithExceptionSendsFailedEventWithExceptionDetails() {
+        RuntimeException ex = new RuntimeException("outter", new Exception("inner"));
+
+        context.start();
+        context.fail(ex);
+
+        Map<String, Object> failedEvent = buildExpectedEvent(context, "failed");
+        failedEvent.put(Attribute.named("exception"), "java.lang.RuntimeException");
+        failedEvent.put(Attribute.named("failure_message"), "outter");
+        failedEvent.put(Attribute.named("root_exception"), "java.lang.Exception");
+        failedEvent.put(Attribute.named("root_failure_message"), "inner");
+
+        verify(eventHandler).handle(buildExpectedEvent(context, "started"));
+        verify(eventHandler).handle(failedEvent);
+    }
+
+
+    @Test
     public void ensureFailUnloadsEventFactoryDataStack() {
         context.put("foo", "bar").start().fail();
 
