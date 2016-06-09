@@ -1,6 +1,7 @@
 package com.bazaarvoice.gumshoe;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.FileHandler;
@@ -9,6 +10,11 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 
 public class EventLogPublisher implements Publisher {
     private String path;
@@ -26,7 +32,13 @@ public class EventLogPublisher implements Publisher {
             logger = Logger.getLogger("gumshoe");
             logger.setUseParentHandlers(false);
             logger.addHandler(fileHandler);
-            gson = new Gson();
+            gson = new GsonBuilder().registerTypeAdapter(Class.class, new JsonSerializer<Class<?>>() {
+                @Override
+                public JsonElement serialize(Class<?> clazz, Type type,
+                        JsonSerializationContext ctx) {
+                    return new JsonPrimitive(clazz.getName());
+                }
+            }).create();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -39,6 +51,10 @@ public class EventLogPublisher implements Publisher {
 
     public String getPath() {
         return path;
+    }
+    
+    public void close() {
+        fileHandler.close();
     }
 
     private Formatter buildFormatter() {
