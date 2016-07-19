@@ -35,7 +35,7 @@ the UUID and see all related events in the stream.
 
 Start and stop events are automatically emitted when you enter/leave a
 context.  The time in milliseconds between these is tracked and included in the
-stopped event as execution_time.
+stopped event as the ```elapsed``` attribute.
 
 Contexts are thread local, and thus will play nice with multi-threaded
 applications.
@@ -51,15 +51,15 @@ context("customer_processing").put("customer", customer.id).start()
 for items in items_of(client):
   context("item_processing").put("item", item.id).start()
   # do something
-  emit("did something")
+  context().emit("did something")
   # do something else
-  emit("did something else")
-  context().stop() # or could be context().fail()
+  context().emit("did something else")
+  context().finish() # or could be context().fail()
 
 context("exporting_file").start()
 # build file
 # push file
-context().stopAll()
+context().finishAll()
 ```
 
 If the customer 1 had two items with ids 1 and 2, this would result in 12 events
@@ -186,8 +186,8 @@ event.  The default decorator adds the hostname, thread name and process
 user to all events.  You can define your own decorator and plug it into
 Gumshoe to suit your needs.
 
-## Emitters
-Emitters are what broadcast events.  There are three offered out of the box:
+## Publishers
+Publishers are what broadcast events.  There are three offered out of the box:
 a standard out emitter, a dev null emitter and a log file emitter.  The
 log file emitter is useful to analyze the audit events using a log aggregation
 tool like the elasticsearch, logstash and kibana stack.  You can write your
@@ -210,3 +210,16 @@ There are two implementations currently provided --
 ## Concrete Example
 A concrete example of Gumshoe in action can be found within the [demo Java
 application](demo/java).
+
+## Making Events Useful
+Gumshoe is just the interface by which your application can emit events.  To
+make the data useful, they need to be shipped to a data store where they can
+be searched, visualized and otherwise explored.  Gumshoe was built with an
+eye towards an ELK stack as the mechanism to ship, index and explore events.
+Such an infrastructure would look something like this:
+
+![gelfk](http://i.imgur.com/qByKfFQ.png)
+
+And allow you to explore the event data with Kibana like so:
+
+![kibana](http://i.imgur.com/BHSdhnu.png)
