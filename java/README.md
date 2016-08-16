@@ -6,7 +6,9 @@ Java implementation of Gumshoe.  Design and usage is consistent with the
 Bring Gumshoe into your project as a maven dependency:
 
 ```
-to be written after release
+  <groupId>com.bazaarvoice</groupId>
+  <artifactId>gumshoe</artifactId>
+  <version>1.4</version>
 ```
 
 Somewhere duing your application's initialization, you need to configure
