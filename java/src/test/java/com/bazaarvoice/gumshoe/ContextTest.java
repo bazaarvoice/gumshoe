@@ -9,6 +9,7 @@ import static org.mockito.Mockito.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 public class ContextTest extends Assert {
     private EventFactory eventFactory;
@@ -95,6 +96,85 @@ public class ContextTest extends Assert {
         context.put("foo", "bar").start();
 
         assertEquals(eventFactory.getDataStack().get("foo"), "bar");
+    }
+
+    @Test
+    public void ensureStartWithCallableReturnsCallableResult() {
+        String result = context.start(new Callable<String>() {
+            @Override
+            public String call() {
+                return "test";
+            }
+        });
+        assertEquals(result, "test");
+    }
+
+    @Test
+    public void ensureStartWithCallableFinishesStatus() {
+        context.start(new Callable<String>() {
+            @Override
+            public String call() {
+                return "test";
+            }
+        });
+        assertEquals(Context.Status.FINISHED, context.getStatus());
+    }
+
+    @Test(expectedExceptions={InContextException.class})
+    public void ensureStartWithCallableThrowingExceptionPropagatesException() {
+        context.start(new Callable<String>() {
+            @Override
+            public String call() {
+                throw new RuntimeException("Ooops, I did it again");
+            }
+        });
+    }
+
+    @Test
+    public void ensureStartWithCallableThrowingExceptionFinishesContext() {
+        try {
+            context.start(new Callable<String>() {
+                @Override
+                public String call() {
+                    throw new RuntimeException("Ooops, I did it again");
+                }
+            });
+        } catch (Exception e) { }
+        assertEquals(Context.Status.FINISHED, context.getStatus());
+    }
+
+    @Test
+    public void ensureStartWithVoidCallableFinishesContext() {
+        context.start(new VoidCallable() {
+            @Override
+            public void call() {
+               // do something
+            }
+        });
+        assertEquals(Context.Status.FINISHED, context.getStatus());
+    }
+
+    @Test(expectedExceptions={InContextException.class})
+    public void ensureStartWithVoidCallableThrowingExceptionPropagatesException() {
+        context.start(new VoidCallable() {
+            @Override
+            public void call() {
+                throw new RuntimeException("Ooops, I did it again");
+            }
+        });
+    }
+
+    @Test
+    public void ensureStartWithVoidCallableThrowingExceptionFinishesContext() {
+        try {
+            context.start(new VoidCallable() {
+                @Override
+                public void call() {
+                    throw new RuntimeException("Ooops, I did it again");
+                }
+            });
+        } catch (Exception e) { }
+        assertEquals(Context.Status.FINISHED, context.getStatus());
     }
 
     @Test(expectedExceptions={IllegalStateException.class})

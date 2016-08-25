@@ -3,6 +3,7 @@ package com.bazaarvoice.gumshoe;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.Callable;
 
 /**
  * A data context for events.  Contexts can be stacked.  Data can be stored
@@ -137,6 +138,44 @@ public class Context {
         eventDispatcher.handle(event);
 
         return this;
+    }
+
+    /**
+     * Starts a context and calls the Callable within it and returns the result.  The context will
+     * be finished or failed as appropriate.  If an exception bubbles out of the Callable, an
+     * InContextException runtime exception will be thrown.
+     *
+     * @param callable
+     * @return
+     */
+    public <V> V start(Callable<V> callable) {
+        try {
+            start();
+            V result = callable.call();
+            finish();
+            return result;
+        } catch (Exception exception) {
+            fail(exception);
+            throw new InContextException(exception);
+        }
+    }
+
+    /**
+     * Starts a context and calls the VoidCallable within it.  The context will be finished or
+     * failed as appropriate.  If an exception bubbles out of the Callable, an InContextException
+     * runtime exception will be thrown.
+     *
+     * @param callable
+     */
+    public void start(VoidCallable callable) {
+        try {
+            start();
+            callable.call();
+            finish();
+        } catch (Exception exception) {
+            fail(exception);
+            throw new InContextException(exception);
+        }
     }
 
     /**
